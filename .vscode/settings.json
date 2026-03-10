@@ -1,0 +1,9 @@
+{
+    "python.defaultInterpreterPath": "e:/CIS_Audit_Project/.venv/Scripts/python.exe",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.languageServer": "Pylance",
+    "python.analysis.extraPaths": [
+        "e:/CIS_Audit_Project/.venv/Lib/site-packages"
+    ],
+    "pyre.interpreter": "e:/CIS_Audit_Project/.venv/Scripts/python.exe"
+}

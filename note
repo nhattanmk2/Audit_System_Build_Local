@@ -1,0 +1,59 @@
+# PHÂN TÍCH LUỒNG HOẠT ĐỘNG CỦA PROJECT: CIS AUDIT SYSTEM (AI-POWERED)
+
+Dự án này là một hệ thống tự động hóa việc kiểm tra (audit) cấu hình hệ thống so với các tiêu chuẩn bảo mật CIS (Center for Internet Security) Benchmark, sử dụng công nghệ RAG (Retrieval-Augmented Generation) và mô hình ngôn ngữ lớn (Gemini).
+
+## 1. Thành phần chính của dự án
+
+Hệ thống bao gồm 2 ứng dụng Streamlit chính:
+- **Ứng dụng nạp dữ liệu (`cis_ingest_app.py`)**: Xây dựng kho tri thức từ các tệp PDF của CIS.
+- **Ứng dụng kiểm tra cấu hình (`config_analyze_app.py`)**: Thực hiện đối soát cấu hình thực tế với các quy tắc CIS.
+
+---
+
+## 2. Chi tiết luồng hoạt động
+
+### Bước 1: Luồng Nạp Dữ liệu (Ingestion Flow - `cis_ingest_app.py`)
+Mục tiêu là chuyển đổi các tài liệu CIS Benchmark (PDF) thành một cơ sở dữ liệu vector có thể tìm kiếm được.
+
+1.  **Tải lên PDF**: Người dùng tải lên tệp CIS Benchmark PDF (ví dụ: CIS Windows 10 Benchmark).
+2.  **Trích xuất văn bản**: Sử dụng `PyMuPDFLoader` để đọc nội dung PDF.
+3.  **Phân tách quy tắc (Parsing)**: Sử dụng Regex để nhận diện các mục (rules) dựa trên ID (ví dụ: 1.1.1), Cấp độ (Level 1/2) và Tiêu đề.
+4.  **Trích xuất chi tiết**: Hệ thống cố gắng bóc tách các giá trị kỳ vọng (Expected value) và toán tử so sánh (==, >=, Disabled/Enabled).
+5.  **Lưu trữ Vector DB**: 
+    - Văn bản được chia nhỏ và chuyển đổi thành vector (Embeddings) bằng mô hình `HuggingFace`.
+    - Toàn bộ dữ liệu được lưu vào thư mục `cis_vector_db` sử dụng `ChromaDB`.
+
+---
+
+### Bước 2: Luồng Kiểm tra Cấu hình (Audit Flow - `config_analyze_app.py`)
+Mục tiêu là kiểm tra một tệp cấu hình thực tế và đưa ra kết quả Pass/Fail.
+
+1.  **Tải lên tệp Config**: Người dùng tải lên tệp cấu hình hệ thống (thường là kết quả xuất từ SecEdit `.inf`, hoặc tệp Registry `.txt`).
+2.  **Chuẩn hóa dữ liệu (Semantic Normalization - LLM)**:
+    - Với mỗi tham số cấu hình (ví dụ: `MinimumPasswordAge = 1`), hệ thống gửi dữ liệu này tới **Gemini**.
+    - Gemini sẽ chuyển đổi các từ khóa kỹ thuật khô khan thành các "khái niệm an ninh mạng" dễ hiểu bằng ngôn ngữ tự nhiên.
+3.  **Truy vấn tri thức (Retriever - RAG)**:
+    - Hệ thống dùng "khái niệm" đã được chuẩn hóa để tìm kiếm trong `cis_vector_db` top 5 quy tắc CIS liên quan nhất.
+4.  **Đánh giá tuân thủ (Evaluation)**:
+    - Hệ thống so sánh giá trị thực tế (Actual Value) với giá trị kỳ vọng (Expected Value) từ quy tắc CIS tìm được.
+    - Áp dụng các logic toán học để quyết định trạng thái: `PASS` (Đạt), `FAIL` (Không đạt), hoặc `SKIP` (Bỏ qua nếu không tìm thấy quy tắc tương ứng).
+5.  **Xuất báo cáo**:
+    - Hiển thị kết quả trực tiếp trên giao diện Streamlit dưới dạng bảng và biểu đồ.
+    - Cho phép xuất báo cáo chuyên nghiệp ra tệp PDF (`exports/`).
+
+---
+
+## 3. Các công nghệ sử dụng
+- **LangChain & ChromaDB**: Quản lý quy trình RAG và cơ sở dữ liệu vector.
+- **Google Gemini API**: Phân tích ngữ nghĩa của các tham số cấu hình.
+- **HuggingFace Embeddings**: Chuyển đổi văn bản thành vector (model: `bge-base-en`).
+- **Streamlit**: Xây dựng giao diện Web nhanh chóng.
+- **ReportLab**: Tạo báo cáo kết quả dưới dạng PDF.
+
+---
+
+## 4. Cấu trúc thư mục quan trọng
+- `/cis_vector_db`: Nơi lưu trữ bộ não tri thức (các quy tắc CIS).
+- `/exports`: Nơi chứa các báo cáo HTML/PDF đã xuất.
+- `.env`: Lưu trữ API Key (Gemini).
+- `requirements.txt`: Danh sách các thư viện cần cài đặt.

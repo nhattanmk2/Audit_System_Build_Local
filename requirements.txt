@@ -18,6 +18,7 @@ sentence-transformers>=2.6.0
 
 # ===== File / text processing =====
 pypdf>=4.0.0
+pymupdf
 chardet>=5.2.0
 tiktoken
 reportlab
@@ -27,4 +28,6 @@ streamlit>=1.32.0
 
 # ===== Math =====
 numpy>=1.26.0
-
+python-docx
+pandas
+python-dotenv

@@ -1,0 +1,12 @@
+{
+  "source_directories": [
+    "e:/CIS_Audit_Project"
+  ],
+  "search_path": [
+    "e:/CIS_Audit_Project/.venv/Lib/site-packages"
+  ],
+  "exclude": [
+    "e:/CIS_Audit_Project/.venv/(?!Lib/site-packages).*"
+  ],
+  "typeshed": "e:/CIS_Audit_Project/.venv/Lib/site-packages/pyre_check/typeshed"
+}

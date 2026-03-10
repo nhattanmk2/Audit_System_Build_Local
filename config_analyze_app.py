@@ -3,6 +3,8 @@ import os
 import chardet
 import json
 import io
+import re
+from typing import Dict, Any, List, Optional
 import google.generativeai as genai
 
 from langchain_chroma import Chroma
@@ -19,6 +21,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from datetime import datetime
 from dotenv import load_dotenv
+from cmc_report_gen import generate_cmc_report
 
 load_dotenv()  # ⬅️ BẮT BUỘC
 
@@ -28,7 +31,7 @@ load_dotenv()  # ⬅️ BẮT BUỘC
 CIS_DB_PATH = "./cis_vector_db"
 
 # ===================== LLM CONFIG =====================
-GEMINI_MODEL = "gemini-2.5-flash" 
+GEMINI_MODEL = "gemini-3.0-flash" 
 
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 
@@ -63,16 +66,13 @@ def detect_encoding(file_content: bytes):
 def parse_secedit_config(content: str):
     docs = []
     section = "General"
-
     for line in content.splitlines():
         line = line.strip()
         if not line or line.startswith(";"):
             continue
-
         if line.startswith("[") and line.endswith("]"):
-            section = line[1:-1]
+            section: str = line.removeprefix("[").removesuffix("]")
             continue
-
         if "=" in line:
             key, value = line.split("=", 1)
             docs.append(
@@ -81,10 +81,60 @@ def parse_secedit_config(content: str):
                     metadata={
                         "section": section,
                         "key": key.strip(),
-                        "value": value.strip()
+                        "value": value.strip(),
+                        "type": "secedit"
                     }
                 )
             )
+    return docs
+
+def parse_registry_dump(content: str):
+    """Phân tích tệp Registry (.reg hoặc .txt dump)"""
+    docs = []
+    current_key = "General"
+    for line in content.splitlines():
+        line = line.strip()
+        if not line or line.startswith(";"):
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            current_key: str = line.removeprefix("[").removesuffix("]")
+            continue
+        if "=" in line:
+            parts = line.split("=", 1)
+            name = parts[0].strip().strip('"')
+            val = parts[1].strip().strip('"')
+            docs.append(
+                Document(
+                    page_content=f"Registry Key: {current_key}\nName: {name}\nValue: {val}",
+                    metadata={
+                        "section": current_key,
+                        "key": name,
+                        "value": val,
+                        "type": "registry"
+                    }
+                )
+            )
+    return docs
+
+def parse_os_patches(content: str):
+    """Phân tích danh sách Hotfix (KB)"""
+    docs = []
+    # Giả định Source 4 cung cấp danh sách KB hoặc output từ 'systeminfo' / 'wmic qfe'
+    # Tìm mã KB (ví dụ: KB5022507)
+    kb_pattern = re.compile(r"KB\d+", re.IGNORECASE)
+    matches = kb_pattern.findall(content)
+    for kb in set(matches):
+        docs.append(
+            Document(
+                page_content=f"OS Patch Installed: {kb}",
+                metadata={
+                    "section": "OS_Patch",
+                    "key": "Hotfix",
+                    "value": kb.upper(),
+                    "type": "patch"
+                }
+            )
+        )
     return docs
 
 # ===================== NORMALIZATION =====================
@@ -113,15 +163,20 @@ def normalize_config_item(config_doc, llm):
 You are a security configuration normalizer.
 
 TASK:
-- Translate the CONFIG KEY into a human-readable security concept.
-- Do NOT evaluate compliance.
-- Do NOT reference CIS.
-- Do NOT guess values not present.
+1. Translate the CONFIG KEY and SECTION into a highly specific security concept. 
+   - ALWAYS include the service/section name if it's a service property (e.g., "TermService ImagePath" -> "Remote Desktop Service Executable Path").
+2. Determine if this setting is typically relevant for security benchmarks (CIS, NIST, etc.).
+   - Structural tags like "[Unicode]", "Version", "Signature" are NOT security-relevant.
 
-Output STRICT JSON only.
+Output STRICT JSON only:
+{{
+  "normalized_concept": "string (the specific security concept)",
+  "is_security_relevant": boolean,
+  "actual_value": "string (the original value)"
+}}
         """),
         ("user", """
-CONFIG:
+CONFIG TO NORMALIZE:
 Section: {section}
 Key: {key}
 Value: {value}
@@ -165,63 +220,200 @@ def evaluate(actual, expected, operator):
     if actual_n is None or expected_n is None:
         return None, "Missing value"
 
-    if type(actual_n) != type(expected_n):
-        return None, f"Type mismatch: actual={type(actual_n).__name__}, expected={type(expected_n).__name__}"
-
     try:
+        # Path normalization if both are strings
+        if isinstance(actual_n, str) and isinstance(expected_n, str):
+            if "\\" in actual_n or "/" in actual_n:
+                actual_n = actual_n.replace("\\", "/").lower().strip()
+                expected_n = expected_n.replace("\\", "/").lower().strip()
+
+        # Cast for comparison
         if operator == "==":
             return actual_n == expected_n, None
         if operator == "!=":
             return actual_n != expected_n, None
-        if operator == ">=":
-            return actual_n >= expected_n, None
-        if operator == "<=":
-            return actual_n <= expected_n, None
-        if operator == ">":
-            return actual_n > expected_n, None
-        if operator == "<":
-            return actual_n < expected_n, None
+        
+        # For numeric comparisons, try float conversion
+        if operator in [">=", "<=", ">", "<"]:
+            try:
+                a_f = float(str(actual_n))
+                e_f = float(str(expected_n))
+                if operator == ">=": return a_f >= e_f, None
+                if operator == "<=": return a_f <= e_f, None
+                if operator == ">": return a_f > e_f, None
+                if operator == "<": return a_f < e_f, None
+            except (ValueError, TypeError):
+                # Fallback
+                return actual_n >= expected_n, None # type: ignore
     except Exception as e:
         return None, str(e)
 
     return None, f"Unsupported operator {operator}"
 
+def select_best_rule(candidates: List[Dict[str, Any]], key_name: str, section_name: str, llm: ChatGoogleGenerativeAI) -> Optional[str]:
+    """Sử dụng LLM để chọn quy tắc khớp nhất trong danh sách các ứng viên."""
+    if not candidates:
+        return None
+    if len(candidates) == 1:
+        return candidates[0]["rule_id"]
+
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", """
+Bạn là một chuyên gia đối soát an ninh.
+
+NHIỆM VỤ:
+Trong danh sách các quy tắc CIS được cung cấp, hãy chọn ra duy nhất một Quy tắc (Rule ID) khớp chính xác nhất với tham số cấu hình.
+- Chú ý sự khác biệt giữa "user account", "machine account", "domain member", "domain controller".
+- Nếu không có quy tắc nào thực sự khớp 100%, hãy trả về "NONE".
+
+ĐỊNH DẠNG TRẢ VỀ: Chỉ trả về duy nhất Rule ID hoặc "NONE". Không giải thích gì thêm.
+        """),
+        ("user", """
+THÔNG TIN THAM SỐ:
+- Tên tham số (Key): {key}
+- Section: {section}
+
+DANH SÁCH QUY TẮC ỨNG VIÊN:
+{candidate_list}
+
+HÃY CHỌN RULE ID KHỚP NHẤT:
+        """)
+    ])
+
+    candidate_text = ""
+    for c in candidates:
+        candidate_text += f"- Rule ID: {c['rule_id']} | Title: {c['title']}\n"
+
+    chain = prompt | llm | StrOutputParser()
+    result = chain.invoke({
+        "key": key_name,
+        "section": section_name,
+        "candidate_list": candidate_text
+    }).strip()
+
+    # Kiểm tra xem kết quả có nằm trong danh sách ID không
+    valid_ids = [c["rule_id"] for c in candidates]
+    if result in valid_ids:
+        return result
+    return None
+
 # ===================== AUDIT CORE =====================
 def audit_config_item(config_doc, cis_db, llm):
     normalized = normalize_config_item(config_doc, llm)
+    
+    actual_value = normalized.get("actual_value")
+    key_name = config_doc.metadata.get("key", "")
+    section_name = config_doc.metadata.get("section", "")
+
+    # Nếu AI đánh giá không phải tham số bảo mật (ví dụ: thẻ [Unicode])
+    if not normalized.get("is_security_relevant", True):
+        return {
+            "rule_id": "N/A",
+            "title": f"[Structural Tag] {key_name}",
+            "actual": actual_value,
+            "expected": "N/A",
+            "compliance_status": "SKIP",
+            "reason": "Tham số mang tính cấu trúc file hoặc không nằm trong phạm vi audit bảo mật."
+        }, []
 
     concept = normalized["normalized_concept"]
-    actual_value = normalized["actual_value"]
 
+    # Search for related rules
     retrieved_docs = cis_db.similarity_search(concept, k=5)
 
-    cis_expectations = []
+    # STRICT KEYWORD FILTERING
+    # Chúng ta trích xuất các từ khóa quan trọng từ Key hoặc Concept
+    # Ví dụ: "MinimumPasswordAge" -> ["minimum", "password", "age"]
+    keywords = set(re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z][a-z]|$)', key_name.lower()))
+    if not keywords:
+        keywords = set(concept.lower().split())
+    
+    # Loại bỏ các từ quá ngắn hoặc quá chung chung
+    stopwords = {"set", "ensure", "minimum", "maximum", "enable", "disable", "is", "to", "and", "the"}
+    keywords = {w for w in keywords if len(w) > 2 and w not in stopwords}
+
+    cis_candidates: List[Dict[str, Any]] = []
     for d in retrieved_docs:
-        if d.metadata.get("expected") not in [None, "Unknown"]:
-            cis_expectations.append({
+        rule_content = d.page_content.lower()
+        rule_title = d.metadata.get("title", "").lower()
+        
+        # 1. Kiểm tra từ khóa bắt buộc
+        has_keyword_match = any(kw in rule_title or kw in rule_content for kw in keywords)
+        
+        # 2. Kiểm tra ngữ cảnh Service (đã có từ trước)
+        is_relevant_service = True
+        s_name_lower = section_name.lower()
+        if "svc" in s_name_lower or s_name_lower in ["termservice", "wuauserv", "lanmanserver"]:
+             if s_name_lower not in rule_content and s_name_lower not in rule_title:
+                 base_name = s_name_lower.replace("svc", "")
+                 if base_name not in rule_content and base_name not in rule_title:
+                    is_relevant_service = False
+        
+        if has_keyword_match and is_relevant_service and d.metadata.get("expected") not in [None, "Unknown"]:
+            cis_candidates.append({
                 "rule_id": d.metadata.get("rule_id"),
                 "title": d.metadata.get("title"),
                 "expected": d.metadata.get("expected"),
                 "operator": d.metadata.get("operator")
             })
 
-    for rule in cis_expectations:
-        result, err = evaluate(actual_value, rule["expected"], rule["operator"])
-        if result is None:
-            continue
-        return {
-            "rule_id": rule["rule_id"],
-            "title": rule["title"],
-            "actual": actual_value,
-            "expected": rule["expected"],
-            "compliance_status": "PASS" if result else "FAIL"
-        }, retrieved_docs
+    # DÙNG AI CHỌN QUY TẮC TỐT NHẤT (Nếu có nhiều hơn 1 ứng viên)
+    best_rule_id = select_best_rule(cis_candidates, key_name, section_name, llm)
+    
+    if best_rule_id:
+        # Tìm quy tắc được chọn trong danh sách ứng viên
+        selected_rule = next((c for c in cis_candidates if c["rule_id"] == best_rule_id), None)
+        if selected_rule:
+            result, err = evaluate(actual_value, selected_rule["expected"], selected_rule["operator"])
+            if result is not None:
+                remediation = "N/A"
+                for d in retrieved_docs:
+                    if d.metadata.get("rule_id") == selected_rule["rule_id"]:
+                        remediation = d.metadata.get("remediation", "Check CIS Benchmark for details.")
+                        break
+
+                return {
+                    "rule_id": selected_rule["rule_id"],
+                    "title": selected_rule["title"],
+                    "actual": actual_value,
+                    "expected": selected_rule["expected"],
+                    "compliance_status": "PASS" if result else "FAIL",
+                    "remediation": remediation if not result else ""
+                }, retrieved_docs
+            else:
+                return {
+                    "rule_id": selected_rule["rule_id"],
+                    "title": selected_rule["title"],
+                    "actual": actual_value,
+                    "expected": selected_rule["expected"],
+                    "compliance_status": "SKIP",
+                    "reason": f"Lỗi trong quá trình so sánh giá trị: {err}"
+                }, retrieved_docs
+        else:
+            return {
+                "rule_id": "N/A",
+                "title": f"Không tìm thấy quy tắc khớp 100% cho: {key_name}",
+                "actual": actual_value,
+                "expected": "N/A",
+                "compliance_status": "SKIP",
+                "reason": "AI re-ranker không chọn được quy tắc nào tối ưu nhất trong các ứng viên."
+            }, retrieved_docs
+
+    # Nếu không có ứng viên nào sau khi lọc
+    skip_reason = f"Không tìm thấy quy tắc CIS nào khớp với từ khóa '{', '.join(keywords)}' trong ngữ cảnh {section_name}."
+    if retrieved_docs:
+        # Kiểm tra xem có phải do thiếu giá trị kỳ vọng (expected) không
+        missing_expected = [d.metadata.get("rule_id") for d in retrieved_docs if d.metadata.get("expected") in [None, "Unknown"]]
+        if missing_expected:
+            skip_reason = f"Tìm thấy quy tắc ({', '.join(missing_expected)}) nhưng chưa trích xuất được giá trị kỳ vọng (expected) từ Benchmark."
 
     return {
-        "rule_title": concept,
+        "rule_id": "N/A",
+        "title": f"Không tìm thấy quy tắc cho: {key_name}",
         "actual": actual_value,
+        "expected": "N/A",
         "compliance_status": "SKIP",
-        "reason": "No comparable CIS expectation after type normalization"
+        "reason": skip_reason
     }, retrieved_docs
 
 def generate_audit_pdf(pdf_rows):
@@ -262,10 +454,10 @@ def generate_audit_pdf(pdf_rows):
 
     for idx, r in enumerate(pdf_rows, start=1):
         table_data.append([
-            idx,
-            r["param_name"],
+            str(idx),
+            str(r["param_name"]),
             str(r["actual_value"]),
-            r["result"]
+            str(r["result"])
         ])
 
     table = Table(
@@ -301,7 +493,39 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
     encoding = detect_encoding(raw_bytes) or "utf-16"
     content = raw_bytes.decode(encoding, errors="ignore")
 
-    config_docs = parse_secedit_config(content)
+    config_docs = []
+    content_lower = content.lower()
+    
+    # 1. Ưu tiên nhận diện theo nội dung (Content-based detection)
+    if any(marker in content for marker in ["Windows Registry Editor", "[HKEY_", "REGEDIT4"]):
+        config_docs = parse_registry_dump(content)
+        st.info("Phát hiện định dạng tệp Registry")
+    elif any(marker in content for marker in ["[Unicode]", "[Version]", "[System Access]", "[Privilege Rights]"]):
+        config_docs = parse_secedit_config(content)
+        st.info("Phát hiện định dạng tệp SecEdit (Inffile)")
+    
+    # 2. Nếu không có marker rõ ràng, thử theo extension hoặc tên file
+    elif uploaded_config.name.endswith(".inf") or "secedit" in uploaded_config.name.lower():
+        config_docs = parse_secedit_config(content)
+    elif uploaded_config.name.endswith(".reg") or "registry" in uploaded_config.name.lower():
+        config_docs = parse_registry_dump(content)
+    
+    # 3. Cuối cùng mới xét đến OS Patch (Hotfix) hoặc Fallback
+    else:
+        # Chỉ coi là Patch nếu có mẫu KB rõ ràng và không giống file config
+        kb_pattern = re.compile(r"KB\d+", re.IGNORECASE)
+        if kb_pattern.search(content) and "=" not in content:
+            config_docs = parse_os_patches(content)
+            st.info("Phát hiện danh sách OS Patch (Hotfix)")
+        else:
+            # Mặc định thử parse theo SecEdit nếu có dấu bằng (phổ biến nhất)
+            if "=" in content:
+                config_docs = parse_secedit_config(content)
+            else:
+                st.warning("Không thể xác định loại file. Thử xử lý như file cấu hình mặc định.")
+                config_docs = parse_secedit_config(content)
+
+    profile_ms = st.checkbox("Hệ thống là Member Server (MS)?", value=True)
 
     if st.button("▶️ Bắt đầu Audit", type="primary"):
         cis_db = Chroma(
@@ -352,6 +576,26 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
                 data=pdf_buffer,
                 file_name=f"audit_result_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
                 mime="application/pdf"
+            )
+
+            # ===== EXPORT CMC WORD REPORT =====
+            cmc_data = []
+            for doc_item in config_docs:
+                # Tìm lại kết quả cho từng doc_item (vì PDF chỉ lấy PASS/FAIL)
+                res, _ = audit_config_item(doc_item, cis_db, llm)
+                cmc_data.append({
+                    "param_name": doc_item.metadata.get("key"),
+                    "actual_value": doc_item.metadata.get("value"),
+                    "result": res.get("compliance_status", "SKIP"),
+                    "remediation": res.get("remediation", "")
+                })
+            
+            word_buffer = generate_cmc_report(cmc_data, target_server=uploaded_config.name)
+            st.download_button(
+                label="📘 Download CMC Report (Word)",
+                data=word_buffer,
+                file_name=f"CMC_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         else:
             st.info("No PASS / FAIL results available for PDF export.")
