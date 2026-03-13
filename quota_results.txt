@@ -1,0 +1,13 @@
+gemini-flash-latest: Success, returned 32 chars
+
+gemini-2.5-flash: Success, returned 38 chars
+
+gemini-2.5-flash-lite: Success, returned 38 chars
+
+gemini-3-flash-preview: Success, returned 32 chars
+
+gemini-2.0-flash-lite: Error ResourceExhausted - 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quo
+
+gemini-pro-latest: Error ResourceExhausted - 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quo

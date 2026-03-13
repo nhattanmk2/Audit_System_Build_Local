@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import time
 import chardet
 import json
 import io
@@ -31,7 +32,7 @@ load_dotenv()  # ⬅️ BẮT BUỘC
 CIS_DB_PATH = "./cis_vector_db"
 
 # ===================== LLM CONFIG =====================
-GEMINI_MODEL = "gemini-3.0-flash" 
+GEMINI_MODEL = "gemini-flash-latest" 
 
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 
@@ -54,12 +55,25 @@ def get_llm():
     
     return ChatGoogleGenerativeAI(
         model=GEMINI_MODEL,
+        google_api_key=os.getenv("GEMINI_API_KEY"),
         temperature=0,   # ⬅️ BẮT BUỘC
         convert_system_message_to_human=True,
     )
 
 
 # ===================== UTILS =====================
+def invoke_chain_with_retry(chain, params, max_retries=6, base_delay=10):
+    for attempt in range(max_retries):
+        try:
+            return chain.invoke(params)
+        except Exception as e:
+            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e) or "Quota" in str(e):
+                if attempt == max_retries - 1:
+                    raise
+                time.sleep(base_delay * (attempt + 1))
+            else:
+                raise
+
 def detect_encoding(file_content: bytes):
     return chardet.detect(file_content).get("encoding")
 
@@ -186,7 +200,7 @@ Value: {value}
     chain = prompt | llm | StrOutputParser()
 
     try:
-        raw = chain.invoke({
+        raw = invoke_chain_with_retry(chain, {
             "section": config_doc.metadata["section"],
             "key": config_doc.metadata["key"],
             "value": config_doc.metadata["value"]
@@ -285,7 +299,7 @@ HÃY CHỌN RULE ID KHỚP NHẤT:
         candidate_text += f"- Rule ID: {c['rule_id']} | Title: {c['title']}\n"
 
     chain = prompt | llm | StrOutputParser()
-    result = chain.invoke({
+    result = invoke_chain_with_retry(chain, {
         "key": key_name,
         "section": section_name,
         "candidate_list": candidate_text
@@ -324,9 +338,10 @@ def audit_config_item(config_doc, cis_db, llm):
     # STRICT KEYWORD FILTERING
     # Chúng ta trích xuất các từ khóa quan trọng từ Key hoặc Concept
     # Ví dụ: "MinimumPasswordAge" -> ["minimum", "password", "age"]
-    keywords = set(re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z][a-z]|$)', key_name.lower()))
-    if not keywords:
-        keywords = set(concept.lower().split())
+    keywords = set(w.lower() for w in re.findall(r'[a-zA-Z][a-z]*|[A-Z]+(?=[A-Z][a-z]|$)', key_name))
+    if not keywords or len(keywords) == 1:
+        # Nếu chỉ có 1 từ (ví dụ do key viết thường hoàn toàn), ta dùng thêm Concept
+        keywords.update(concept.lower().split())
     
     # Loại bỏ các từ quá ngắn hoặc quá chung chung
     stopwords = {"set", "ensure", "minimum", "maximum", "enable", "disable", "is", "to", "and", "the"}

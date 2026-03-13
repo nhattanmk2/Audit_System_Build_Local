@@ -80,38 +80,40 @@ def extract_rule_details(rule_body):
     operator = "Unknown"
     expected = "Unknown"
 
-    body = rule_body.lower()
+    # Chuẩn hóa khoảng trắng và cắt bỏ xuống dòng để regex không bị đứt đoạn
+    rule_body_clean = re.sub(r"\s+", " ", rule_body)
+    body = rule_body_clean.lower()
     
     # 1. Map Enabled -> 1 / Disabled -> 0
     # \u2018-\u201d là các dải nháy thông minh
-    if re.search(r"set to\s+['\"‘“\u2018\u201c]?enabled['\"’”?\u2019\u201d]?", body):
+    if re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?enabled['\"’”?\u2019\u201d]?", body):
         return "==", "1"
-    if re.search(r"set to\s+['\"‘“\u2018\u201c]?disabled['\"’”?\u2019\u201d]?", body):
+    if re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?disabled['\"’”?\u2019\u201d]?", body):
         return "==", "0"
         
-    # 2. Xử lý các chuỗi cụ thể nằm trong nháy (Ví dụ: 'No One', 'Administrators')
-    # Chúng ta capture nội dung bên trong nháy nếu nó không phải chỉ là số
-    quote_match = re.search(r"set to\s+['\"‘“\u2018\u201c](.*?)['\"’”?\u2019\u201d']", rule_body)
-    if quote_match:
-        val = quote_match.group(1).strip()
-        if not val.replace(".", "").isdigit(): # Nếu là chữ (như "No One")
-            return "==", val
-
-    # 3. Xử lý các mẫu số lượng (or more/fewer)
-    m = re.search(r"set to\s+['\"‘“\u2018\u201c]?(\d+)\s+or more", body)
+    # 2. Xử lý các mẫu số lượng (or more/fewer)
+    m = re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?(\d+)\s+or more", body)
     if not m:
         m = re.search(r"(\d+)\s+or more", body)
     if m:
         return ">=", m.group(1)
 
-    m = re.search(r"set to\s+['\"‘“\u2018\u201c]?(\d+)\s+or (?:fewer|less)", body)
+    m = re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?(\d+)\s+or (?:fewer|less)", body)
     if not m:
         m = re.search(r"(\d+)\s+or (?:fewer|less)", body)
     if m:
         return "<=", m.group(1)
+
+    # 3. Xử lý các chuỗi cụ thể nằm trong nháy (Ví dụ: 'No One', 'Administrators')
+    # Chúng ta capture nội dung bên trong nháy nếu nó không phải chỉ là số
+    quote_match = re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c](.*?)['\"’”?\u2019\u201d']", rule_body_clean)
+    if quote_match:
+        val = quote_match.group(1).strip()
+        if not val.replace(".", "").isdigit(): # Nếu là chữ (như "No One")
+            return "==", val
         
     # 4. Mẫu số đơn thuần: set to 'X' hoặc set to X
-    m = re.search(r"set to\s+['\"‘“\u2018\u201c]?(\d+)['\"’”?\u2019\u201d']?", body)
+    m = re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?(\d+)['\"’”?\u2019\u201d']?", body)
     if m:
         return "==", m.group(1)
 
