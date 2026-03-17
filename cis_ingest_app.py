@@ -86,11 +86,21 @@ def extract_rule_details(rule_body):
     
     # 1. Map Enabled -> 1 / Disabled -> 0
     # \u2018-\u201d là các dải nháy thông minh
-    if re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?enabled['\"’”?\u2019\u201d]?", body):
+    if re.search(r"set\s+to\s+['\"‘“\u2018\u201c]?enabled['\"’”?\u2019\u201d]?", body):
         return "==", "1"
-    if re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?disabled['\"’”?\u2019\u201d]?", body):
+    if re.search(r"set\s+to\s+['\"‘“\u2018\u201c]?disabled['\"’”?\u2019\u201d]?", body):
         return "==", "0"
-        
+    
+    # New: Handle "to include" specifically for inclusion rules (like auditing)
+    inc_m = re.search(r"to\s+include\s+['\"‘“\u2018\u201c](.*?)['\"’”?\u2019\u201d']", rule_body_clean)
+    if inc_m:
+        val = inc_m.group(1).strip()
+        return "include", val
+    
+    # Fallback for "to include" without quotes for simple values
+    if re.search(r"to\s+include\s+enabled", body): return "include", "1"
+    if re.search(r"to\s+include\s+disabled", body): return "include", "0"
+
     # 2. Xử lý các mẫu số lượng (or more/fewer)
     m = re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?(\d+)\s+or more", body)
     if not m:
@@ -106,24 +116,38 @@ def extract_rule_details(rule_body):
 
     # 3. Xử lý các chuỗi cụ thể nằm trong nháy (Ví dụ: 'No One', 'Administrators')
     # Chúng ta capture nội dung bên trong nháy nếu nó không phải chỉ là số
-    quote_match = re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c](.*?)['\"’”?\u2019\u201d']", rule_body_clean)
+    quote_match = re.search(r"set\s+to\s+['\"‘“\u2018\u201c](.*?)['\"’”?\u2019\u201d']", rule_body_clean)
     if quote_match:
         val = quote_match.group(1).strip()
         if not val.replace(".", "").isdigit(): # Nếu là chữ (như "No One")
             return "==", val
         
     # 4. Mẫu số đơn thuần: set to 'X' hoặc set to X
-    m = re.search(r"(?:set\s+to|to\s+include)\s+['\"‘“\u2018\u201c]?(\d+)['\"’”?\u2019\u201d']?", body)
+    m = re.search(r"set\s+to\s+['\"‘“\u2018\u201c]?(\d+)['\"’”?\u2019\u201d']?", body)
     if m:
         return "==", m.group(1)
+
+    # 5. Xử lý mẫu dải giá trị (Range): between X and Y
+    range_m = re.search(r"between\s+(\d+)\s+and\s+(\d+)", body)
+    if range_m:
+        return "range", f"{range_m.group(1)}-{range_m.group(2)}"
 
     return operator, expected
 
 def parse_cis_rules(full_text):
-    # Cập nhật regex để bắt thêm nội dung sau tiêu đề đến khi gặp rule mới
-    rule_pattern = re.compile(r"^(\d+(?:\.\d+)+)\s+\((L[12])\)\s+(.+)$", re.MULTILINE)
+    # Cải thiện regex: Thêm \s* ở đầu để cho phép khoảng trắng, và dùng re.MULTILINE
+    # Một số PDF có thể có khoảng trắng hoặc tab ở đầu dòng
+    rule_pattern = re.compile(r"^\s*(\d+(?:\.\d+)+)\s+\((L[12])\)\s+(.+)$", re.MULTILINE)
     matches = list(rule_pattern.finditer(full_text))
     documents = []
+    
+    if not matches:
+        st.warning("⚠️ Không tìm thấy quy tắc nào khớp với định dạng 'X.X.X (L1/L2) Title'.")
+        # Thử regex lỏng lẻo hơn nếu không thấy kết quả
+        rule_pattern_loose = re.compile(r"(\d+(?:\.\d+)+)\s+\((L[12])\)\s+(.+)")
+        matches = list(rule_pattern_loose.finditer(full_text))
+        if matches:
+            st.info(f"💡 Đã tìm thấy {len(matches)} quy tắc bằng phương pháp quét tự do.")
 
     for i, m in enumerate(matches):
         start = m.start()
@@ -195,163 +219,238 @@ def process_pdf(uploaded_file):
     full_text = normalize_text(pages)
     docs = parse_cis_rules(full_text)
 
-    db = Chroma.from_documents(
-        documents=docs,
-        embedding=get_embedding_model(),
-        persist_directory=VECTOR_DB_PATH,
-        collection_name=COLLECTION_NAME
-    )
+    st.info(f"🔄 Đang nạp {len(docs)} quy tắc vào Vector Database...")
     
-    # Ép buộc đóng kết nối và giải phóng tài nguyên
-    if hasattr(db, "_client") and hasattr(db._client, "close"):
-        db._client.close()
-    
-    del db
-    os.remove(temp_path)
-    gc.collect()
+    try:
+        db = Chroma.from_documents(
+            documents=docs,
+            embedding=get_embedding_model(),
+            persist_directory=VECTOR_DB_PATH,
+            collection_name=COLLECTION_NAME
+        )
+        
+        # Ép buộc đóng kết nối và giải phóng tài nguyên
+        if hasattr(db, "_client") and hasattr(db._client, "close"):
+            db._client.close()
+        
+        del db
+        os.remove(temp_path)
+        gc.collect()
+        st.success(f"✅ Ingest thành công {len(docs)} CIS rules")
+        
+    except Exception as e:
+        error_msg = str(e)
+        if "code: 14" in error_msg or "unable to open database file" in error_msg:
+            st.error("❌ **DATABASE ĐANG BỊ KHÓA!**")
+            st.warning("👉 Bạn đang chạy file `config_analyze_app.py` (ứng dụng Audit) hoặc một tiến trình khác đang sử dụng database này.")
+            st.info("💡 **Cách khắc phục:**\n1. Tắt terminal đang chạy `config_analyze_app.py`.\n2. Thử nhấn nút **🚀 Bắt đầu Ingest** lại.\n3. Nếu vẫn không được, hãy nhấn nút **🗑️ Xóa/Đổi tên Database cũ** ở phía dưới trước khi nạp.")
+        else:
+            st.error(f"❌ Lỗi khi nạp vào Vector DB: {error_msg}")
+        
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 
-    st.success(f"✅ Ingest thành công {len(docs)} CIS rules")
+# ================= EXPORT DB =================
+def export_vector_db():
+    """Xuất dữ liệu từ Vector DB ra các định dạng khác nhau (HTML, CSV)"""
+    try:
+        db = Chroma(
+            persist_directory=VECTOR_DB_PATH,
+            embedding_function=get_embedding_model(),
+            collection_name=COLLECTION_NAME
+        )
 
-# ================= EXPORT DB → HTML =================
-def export_db_to_html():
-    db = Chroma(
-        persist_directory=VECTOR_DB_PATH,
-        embedding_function=get_embedding_model(),
-        collection_name=COLLECTION_NAME
-    )
+        raw = db._collection.get(include=["documents", "metadatas"])
+        
+        # Giải phóng lock ngay sau khi lấy dữ liệu
+        if hasattr(db, "_client") and hasattr(db._client, "close"):
+            db._client.close()
+        del db
+        gc.collect()
 
-    raw = db._collection.get(include=["documents", "metadatas"])
-    rows = []
+        if not raw["documents"]:
+            return None, None
 
-    for i, (doc, meta) in enumerate(zip(raw["documents"], raw["metadatas"]), start=1):
-        rows.append({
-            "STT": i,
-            "Rule ID": meta.get("rule_id"),
-            "Level": meta.get("level"),
-            "Title": meta.get("title"),
-            "Operator": meta.get("operator"),
-            "Expected": meta.get("expected"),
-            "Remediation": meta.get("remediation", "N/A"),
-            "Source": meta.get("source"),
-            "Rule Content": doc.replace("\n", "<br>")
-        })
+        rows = []
+        for i, (doc, meta) in enumerate(zip(raw["documents"], raw["metadatas"]), start=1):
+            rows.append({
+                "STT": i,
+                "Rule ID": meta.get("rule_id"),
+                "Level": meta.get("level"),
+                "Title": meta.get("title"),
+                "Operator": meta.get("operator"),
+                "Expected": meta.get("expected"),
+                "Remediation": meta.get("remediation", "N/A"),
+                "Source": meta.get("source"),
+                "Rule Content": doc
+            })
 
-    df = pd.DataFrame(rows)
-
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_path = os.path.join(EXPORT_DIR, f"cis_vector_db_{timestamp}.html")
-
-    html = df.to_html(
-        escape=False,
-        index=False,
-        border=0,
-        classes="table table-striped"
-    )
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(f"""
+        df = pd.DataFrame(rows)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # 1. Tạo file HTML (với DataTables để tìm kiếm/phân trang)
+        html_path = os.path.join(EXPORT_DIR, f"cis_export_{timestamp}.html")
+        
+        # HTML template với Bootstrap và DataTables
+        html_content = df.copy()
+        html_content["Rule Content"] = html_content["Rule Content"].str.replace("\n", "<br>")
+        
+        table_html = html_content.to_html(
+            escape=False, index=False, border=0, 
+            classes="table table-hover table-bordered display", 
+            table_id="cisTable"
+        )
+        
+        with open(html_path, "w", encoding="utf-8") as f:
+            f.write(f"""
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-<meta charset="utf-8">
-<title>CIS Vector Database</title>
-<style>
-body {{ font-family: Arial, sans-serif; padding: 20px; }}
-table {{ border-collapse: collapse; width: 100%; }}
-th, td {{ border: 1px solid #ccc; padding: 8px; vertical-align: top; }}
-th {{ background-color: #f4f4f4; }}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CIS Benchmark Export - {timestamp}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <style>
+        body {{ background-color: #f8f9fa; padding-top: 2rem; }}
+        .container {{ max-width: 95%; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }}
+        h2 {{ color: #0d6efd; margin-bottom: 1.5rem; }}
+        thead {{ background-color: #e9ecef; }}
+        .rule-cell {{ font-size: 0.9rem; max-height: 200px; overflow-y: auto; display: block; }}
+    </style>
 </head>
 <body>
-<h2>CIS Vector Database Export</h2>
-<p>Generated at: {timestamp}</p>
-{html}
+    <div class="container mb-5">
+        <h2>📚 CIS Benchmark Vector Database Map</h2>
+        <p class="text-muted">Xuất bản lúc: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+        <hr>
+        <div class="table-responsive">
+            {table_html}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {{
+            $('#cisTable').DataTable({{
+                "language": {{
+                    "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+                    "zeroRecords": "Không tìm thấy dữ liệu",
+                    "info": "Trang _PAGE_ / _PAGES_",
+                    "infoEmpty": "Dữ liệu trống",
+                    "infoFiltered": "(lọc từ _MAX_ dòng)",
+                    "search": "Tìm kiếm:",
+                    "paginate": {{
+                        "first": "Đầu",
+                        "last": "Cuối",
+                        "next": "Sau",
+                        "previous": "Trước"
+                    }}
+                }},
+                "pageLength": 10,
+                "order": [[0, "asc"]]
+            }});
+        }});
+    </script>
 </body>
 </html>
 """)
 
-    # Đảm bảo giải phóng database handle
-    if hasattr(db, "_client") and hasattr(db._client, "close"):
-        db._client.close()
-        
-    del db
-    gc.collect()
+        # 2. Tạo file CSV
+        csv_path = os.path.join(EXPORT_DIR, f"cis_export_{timestamp}.csv")
+        df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
-    return output_path
+        return html_path, csv_path
+
+    except Exception as e:
+        st.error(f"❌ Lỗi khi xuất dữ liệu: {str(e)}")
+        return None, None
 
 def delete_db_completely(path: str):
-    """Xóa database bằng kỹ thuật Rename-then-Delete để tránh lỗi Access Denied trên Windows"""
+    """Xóa database bằng kỹ thuật Rename-then-Delete chuyên sâu cho Windows"""
     try:
         if not os.path.exists(path):
             st.warning("Database không tồn tại.")
             return False
 
-        # 1. Ép buộc giải phóng tài nguyên của process này
+        # 1. Giải phóng tài nguyên
         gc.collect()
-        time.sleep(1)
+        time.sleep(0.5)
 
-        # 2. Thực hiện Đổi tên (Rename) - Đây là bước quan trọng nhất trên Windows
+        # 2. Đổi tên folder gốc sang thư mục Trash để giải phóng path ngay lập tức
         timestamp = datetime.now().strftime("%H%M%S")
         trash_path = f"{path}_TRASH_{timestamp}"
         
         try:
             os.rename(path, trash_path)
-            st.info(f"📁 Đã di dời database cũ vào thư mục tạm: `{os.path.basename(trash_path)}`")
-            st.success("✅ Đường dẫn gốc đã được giải phóng. Bạn có thể nạp dữ liệu mới ngay lập tức!")
         except Exception as e:
-            st.error(f"❌ Không thể xóa/đổi tên thư mục: {str(e)}")
-            st.warning("👉 **Cách bẻ khóa nhanh nhất trên Windows:**")
-            st.info("1. Quay lại terminal đang chạy `cis_ingest_app.py`.\n2. Nhấn **Ctrl + C** để dừng ứng dụng.\n3. Chạy lại lệnh `streamlit run cis_ingest_app.py`.\n4. Nhấn xóa Database lại lần nữa.")
+            st.error(f"❌ File đang bị khóa bởi hệ thống: {str(e)}")
+            st.info("💡 **Gợi ý:** Hãy đóng cửa sổ terminal đang chạy `config_analyze_app.py` và thử lại.")
             return False
 
-        # 3. Thử xóa thư mục tạm (sau khi đã đổi tên thành công)
+        # 3. Thử xóa folder Trash
         try:
             shutil.rmtree(trash_path, ignore_errors=True)
             if not os.path.exists(trash_path):
-                st.write("✨ Đã dọn dẹp sạch sẽ dữ liệu cũ.")
+                st.success("✨ Đã dọn dẹp sạch sẽ dữ liệu cũ.")
             else:
-                st.warning("⚠️ Thư mục tạm vẫn còn do có file đang bị khóa. Nó sẽ tự biến mất sau khi bạn tắt hoàn toàn terminal chạy ứng dụng này.")
+                st.info("📁 Folder cũ đã được đưa vào khu vực chờ xóa tự động.")
         except Exception:
-            pass 
+            pass
 
         return True
-            
     except Exception as e:
         st.error(f"❌ Lỗi hệ thống: {str(e)}")
         return False
 
 # ================= UI =================
+st.warning("⚠️ **Lưu ý:** Đảm bảo bạn đã **TẮT** ứng dụng Audit (`config_analyze_app.py`) trước khi nhấn Ingest để tránh lỗi tranh chấp file database.")
+
 uploaded_file = st.file_uploader("Upload CIS Benchmark PDF", type="pdf")
-if uploaded_file and st.button("🚀 Bắt đầu Ingest"):
+if uploaded_file and st.button("🚀 Bắt đầu Ingest", use_container_width=True):
     process_pdf(uploaded_file)
 
 st.divider()
 
 if os.path.exists(VECTOR_DB_PATH):
+    st.subheader("🛠️ Quản lý Cơ sở dữ liệu")
     col_exp, col_del = st.columns([1, 1])
     
     with col_exp:
-        if st.button("📤 Export Vector DB → HTML", use_container_width=True):
-            html_path = export_db_to_html()
-            st.success("✅ Export thành công")
-
-            with open(html_path, "rb") as f:
-                st.download_button(
-                    label="📥 Tải file HTML",
-                    data=f,
-                    file_name=os.path.basename(html_path),
-                    mime="text/html",
-                    use_container_width=True
-                )
-            st.info("👉 Mở file HTML bằng trình duyệt để xem Database")
+        if st.button("📤 Xuất dữ liệu (Export)", use_container_width=True):
+            html_p, csv_p = export_vector_db()
+            if html_p and csv_p:
+                st.success("✅ Đã tạo các tệp xuất dữ liệu.")
+                
+                # Tải HTML
+                with open(html_p, "rb") as f:
+                    st.download_button(
+                        label="🌐 Tải HTML (Interactive)",
+                        data=f,
+                        file_name=os.path.basename(html_p),
+                        mime="text/html",
+                        use_container_width=True
+                    )
+                
+                # Tải CSV
+                with open(csv_p, "rb") as f:
+                    st.download_button(
+                        label="📄 Tải CSV (Excel Ready)",
+                        data=f,
+                        file_name=os.path.basename(csv_p),
+                        mime="text/csv",
+                        use_container_width=True
+                    )
+            else:
+                st.warning("⚠️ Không có dữ liệu để xuất.")
 
     with col_del:
-        # Sử dụng popover làm "Popup xác nhận"
-        with st.popover("🗑️ Xóa toàn bộ CIS Database", use_container_width=True):
-            st.warning("⚠️ Hành động này sẽ xóa vĩnh viễn toàn bộ dữ liệu đã ingest. Bạn có chắc chắn không?")
-            if st.button("🔥 Xác nhận xóa vĩnh viễn", type="primary", use_container_width=True):
+        with st.popover("🗑️ Xóa Database", use_container_width=True):
+            st.error("Hành động này không thể hoàn tác!")
+            if st.button("🔥 Xác nhận xóa", type="primary", use_container_width=True):
                 if delete_db_completely(VECTOR_DB_PATH):
-                    time.sleep(1)
                     st.rerun()
 
 

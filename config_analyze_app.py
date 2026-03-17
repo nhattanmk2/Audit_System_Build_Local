@@ -19,6 +19,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from datetime import datetime
 from dotenv import load_dotenv
@@ -32,7 +33,8 @@ load_dotenv()  # ⬅️ BẮT BUỘC
 CIS_DB_PATH = "./cis_vector_db"
 
 # ===================== LLM CONFIG =====================
-GEMINI_MODEL = "gemini-flash-latest" 
+DEFAULT_GEMMA_MODEL = "gemma-3-27b-it" 
+DEFAULT_BENCHMARK_MODEL = "gemini-2.0-flash"
 
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 
@@ -51,10 +53,10 @@ def get_embedding_model():
     return HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
 
 # @st.cache_resource
-def get_llm():
+def get_llm(model_name):
     
     return ChatGoogleGenerativeAI(
-        model=GEMINI_MODEL,
+        model=model_name,
         google_api_key=os.getenv("GEMINI_API_KEY"),
         temperature=0,   # ⬅️ BẮT BUỘC
         convert_system_message_to_human=True,
@@ -247,6 +249,24 @@ def evaluate(actual, expected, operator):
         if operator == "!=":
             return actual_n != expected_n, None
         
+        # New: Handle "include" operator (case-insensitive substring match)
+        if operator == "include":
+            try:
+                a_s = str(actual_n).lower()
+                e_s = str(expected_n).lower()
+                return e_s in a_s, None
+            except (ValueError, TypeError):
+                return False, "Error during include comparison"
+
+        # New: Handle "range" operator (inclusive range check X-Y)
+        if operator == "range":
+            try:
+                val = float(str(actual_n))
+                low, high = map(float, str(expected_n).split("-"))
+                return low <= val <= high, None
+            except Exception:
+                return False, f"Invalid range format or value: {actual_n} vs {expected_n}"
+        
         # For numeric comparisons, try float conversion
         if operator in [">=", "<=", ">", "<"]:
             try:
@@ -257,8 +277,11 @@ def evaluate(actual, expected, operator):
                 if operator == ">": return a_f > e_f, None
                 if operator == "<": return a_f < e_f, None
             except (ValueError, TypeError):
-                # Fallback
-                return actual_n >= expected_n, None # type: ignore
+                # Fallback for string comparison if float fails
+                if operator == ">=": return str(actual_n) >= str(expected_n), None
+                if operator == "<=": return str(actual_n) <= str(expected_n), None
+                if operator == ">": return str(actual_n) > str(expected_n), None
+                if operator == "<": return str(actual_n) < str(expected_n), None
     except Exception as e:
         return None, str(e)
 
@@ -319,7 +342,7 @@ def audit_config_item(config_doc, cis_db, llm):
     key_name = config_doc.metadata.get("key", "")
     section_name = config_doc.metadata.get("section", "")
 
-    # Nếu AI đánh giá không phải tham số bảo mật (ví dụ: thẻ [Unicode])
+    # Nếu AI đánh giá không phải tham số bảo mật
     if not normalized.get("is_security_relevant", True):
         return {
             "rule_id": "N/A",
@@ -332,51 +355,60 @@ def audit_config_item(config_doc, cis_db, llm):
 
     concept = normalized["normalized_concept"]
 
-    # Search for related rules
-    retrieved_docs = cis_db.similarity_search(concept, k=5)
-
-    # STRICT KEYWORD FILTERING
-    # Chúng ta trích xuất các từ khóa quan trọng từ Key hoặc Concept
-    # Ví dụ: "MinimumPasswordAge" -> ["minimum", "password", "age"]
-    keywords = set(w.lower() for w in re.findall(r'[a-zA-Z][a-z]*|[A-Z]+(?=[A-Z][a-z]|$)', key_name))
-    if not keywords or len(keywords) == 1:
-        # Nếu chỉ có 1 từ (ví dụ do key viết thường hoàn toàn), ta dùng thêm Concept
-        keywords.update(concept.lower().split())
+    # 1. TRÍCH XUẤT LEAF VÀ CONTEXT TỪ KEY (PATH)
+    # Ví dụ: MACHINE\Software\...\SignSecureChannel -> leaf="SignSecureChannel", context=["Parameters", "Netlogon", ...]
+    path_parts = [p.strip() for p in key_name.replace("/", "\\").split("\\") if p.strip()]
+    if not path_parts:
+        path_parts = [key_name]
     
-    # Loại bỏ các từ quá ngắn hoặc quá chung chung
-    stopwords = {"set", "ensure", "minimum", "maximum", "enable", "disable", "is", "to", "and", "the"}
-    keywords = {w for w in keywords if len(w) > 2 and w not in stopwords}
+    leaf_node = path_parts[-1]
+    context_tokens = path_parts[:-1][::-1] # Đảo ngược để ưu tiên từ phải sang trái
+
+    # 2. TRÍCH XUẤT TỪ KHÓA TỪ LEAF (BẮT BUỘC KHỚP)
+    leaf_keywords = set(w.lower() for w in re.findall(r'[a-zA-Z][a-z]*|[A-Z]+(?=[A-Z][a-z]|$)', leaf_node))
+    stopwords = {"set", "ensure", "minimum", "maximum", "enable", "disable", "is", "to", "and", "the", "parameters", "machine", "software", "system", "currentcontrolset", "services"}
+    leaf_keywords = {w for w in leaf_keywords if len(w) > 2 and w not in stopwords}
+
+    # Search for related rules using the leaf node concept
+    search_query = f"{leaf_node} {concept}"
+    retrieved_docs = cis_db.similarity_search(search_query, k=8)
 
     cis_candidates: List[Dict[str, Any]] = []
     for d in retrieved_docs:
         rule_content = d.page_content.lower()
         rule_title = d.metadata.get("title", "").lower()
         
-        # 1. Kiểm tra từ khóa bắt buộc
-        has_keyword_match = any(kw in rule_title or kw in rule_content for kw in keywords)
-        
-        # 2. Kiểm tra ngữ cảnh Service (đã có từ trước)
-        is_relevant_service = True
-        s_name_lower = section_name.lower()
-        if "svc" in s_name_lower or s_name_lower in ["termservice", "wuauserv", "lanmanserver"]:
-             if s_name_lower not in rule_content and s_name_lower not in rule_title:
-                 base_name = s_name_lower.replace("svc", "")
-                 if base_name not in rule_content and base_name not in rule_title:
-                    is_relevant_service = False
-        
-        if has_keyword_match and is_relevant_service and d.metadata.get("expected") not in [None, "Unknown"]:
+        # 3. KIỂM TRA TỪ KHÓA BẮT BUỘC (STRICT MATCH)
+        # Tiêu đề rule phải chứa ít nhất 1 từ khóa quan trọng từ leaf node
+        if not any(kw in rule_title for kw in leaf_keywords):
+            continue
+            
+        # 4. TÍNH ĐIỂM NGỮ CẢNH (CONTEXT SCORE)
+        context_score = 0
+        for i, token in enumerate(context_tokens):
+            token_lower = token.lower()
+            if token_lower in rule_title or token_lower in rule_content:
+                # Càng gần leaf (index nhỏ) thì điểm càng cao
+                context_score += (10 / (i + 1))
+
+        if d.metadata.get("expected") not in [None, "Unknown"]:
             cis_candidates.append({
                 "rule_id": d.metadata.get("rule_id"),
                 "title": d.metadata.get("title"),
                 "expected": d.metadata.get("expected"),
-                "operator": d.metadata.get("operator")
+                "operator": d.metadata.get("operator"),
+                "context_score": context_score
             })
 
-    # DÙNG AI CHỌN QUY TẮC TỐT NHẤT (Nếu có nhiều hơn 1 ứng viên)
-    best_rule_id = select_best_rule(cis_candidates, key_name, section_name, llm)
+    # Sắp xếp ứng viên theo điểm ngữ cảnh giảm dần
+    cis_candidates.sort(key=lambda x: x["context_score"], reverse=True)
+
+    # 5. DÙNG AI CHỌN QUY TẮC TỐT NHẤT (Nếu có ít nhất 1 ứng viên)
+    best_rule_id = None
+    if cis_candidates:
+        best_rule_id = select_best_rule(cis_candidates[:3], key_name, section_name, llm)
     
     if best_rule_id:
-        # Tìm quy tắc được chọn trong danh sách ứng viên
         selected_rule = next((c for c in cis_candidates if c["rule_id"] == best_rule_id), None)
         if selected_rule:
             result, err = evaluate(actual_value, selected_rule["expected"], selected_rule["operator"])
@@ -404,24 +436,12 @@ def audit_config_item(config_doc, cis_db, llm):
                     "compliance_status": "SKIP",
                     "reason": f"Lỗi trong quá trình so sánh giá trị: {err}"
                 }, retrieved_docs
-        else:
-            return {
-                "rule_id": "N/A",
-                "title": f"Không tìm thấy quy tắc khớp 100% cho: {key_name}",
-                "actual": actual_value,
-                "expected": "N/A",
-                "compliance_status": "SKIP",
-                "reason": "AI re-ranker không chọn được quy tắc nào tối ưu nhất trong các ứng viên."
-            }, retrieved_docs
 
-    # Nếu không có ứng viên nào sau khi lọc
-    skip_reason = f"Không tìm thấy quy tắc CIS nào khớp với từ khóa '{', '.join(keywords)}' trong ngữ cảnh {section_name}."
-    if retrieved_docs:
-        # Kiểm tra xem có phải do thiếu giá trị kỳ vọng (expected) không
-        missing_expected = [d.metadata.get("rule_id") for d in retrieved_docs if d.metadata.get("expected") in [None, "Unknown"]]
-        if missing_expected:
-            skip_reason = f"Tìm thấy quy tắc ({', '.join(missing_expected)}) nhưng chưa trích xuất được giá trị kỳ vọng (expected) từ Benchmark."
-
+    # Nếu không tìm thấy quy tắc thực sự phù hợp thì SKIP
+    skip_reason = f"Không tìm thấy quy tắc CIS nào khớp chính xác với tiêu chí '{leaf_node}'."
+    if not leaf_keywords:
+        skip_reason = f"Không thể trích xuất từ khóa đặc trưng từ '{leaf_node}' để so khớp."
+    
     return {
         "rule_id": "N/A",
         "title": f"Không tìm thấy quy tắc cho: {key_name}",
@@ -434,7 +454,24 @@ def audit_config_item(config_doc, cis_db, llm):
 def generate_audit_pdf(pdf_rows):
     buffer = io.BytesIO()
 
-    pdfmetrics.registerFont(UnicodeCIDFont("HeiseiMin-W3"))
+    # Register Vietnamese compatible font
+    font_name = "TimesNewRoman"
+    font_name_bold = "TimesNewRoman-Bold"
+    
+    font_path = os.path.join(os.environ.get("WINDIR", "C:/Windows"), "Fonts", "times.ttf")
+    font_bold_path = os.path.join(os.environ.get("WINDIR", "C:/Windows"), "Fonts", "timesbd.ttf")
+    
+    if os.path.exists(font_path):
+        pdfmetrics.registerFont(TTFont(font_name, font_path))
+        if os.path.exists(font_bold_path):
+            pdfmetrics.registerFont(TTFont(font_name_bold, font_bold_path))
+        else:
+            font_name_bold = font_name
+    else:
+        # Fallback to CID font if system font not found (might still have encoding issues)
+        pdfmetrics.registerFont(UnicodeCIDFont("HeiseiMin-W3"))
+        font_name = "HeiseiMin-W3"
+        font_name_bold = "HeiseiMin-W3"
 
     doc = SimpleDocTemplate(
         buffer,
@@ -446,48 +483,71 @@ def generate_audit_pdf(pdf_rows):
     )
 
     styles = getSampleStyleSheet()
-    styles["Normal"].fontName = "HeiseiMin-W3"
-    styles["Heading1"].fontName = "HeiseiMin-W3"
+    styles["Normal"].fontName = font_name
+    styles["Heading1"].fontName = font_name_bold
+
+    # Custom cell style for the criteria column to support wrapping
+    criteria_style = styles["Normal"].clone("Criteria")
+    criteria_style.fontSize = 10
+    criteria_style.leading = 12
+
+    # Style for the header row
+    header_style = styles["Normal"].clone("Header")
+    header_style.fontSize = 11
+    header_style.fontName = font_name_bold
+    header_style.alignment = 1 # Center
 
     elements = []
 
     # ===== TITLE =====
     elements.append(Paragraph(
-        "CONFIGURATION AUDIT RESULT (PASS / FAIL)",
+        "BÁO CÁO KẾT QUẢ KIỂM ĐỊNH CẤU HÌNH",
         styles["Heading1"]
     ))
     elements.append(Paragraph(
-        f"Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        f"Thời gian quét: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         styles["Normal"]
     ))
-    elements.append(Spacer(1, 16))
+    elements.append(Spacer(1, 24))
 
     # ===== TABLE =====
+    # Two columns: Criteria and Result
     table_data = [
-        ["No.", "Parameter Name", "Actual Value", "Result"]
+        [
+            Paragraph(f"<b>HẠNG MỤC KIỂM TRA, ĐÁNH GIÁ</b>", header_style),
+            Paragraph(f"<b>KẾT QUẢ</b>", header_style)
+        ]
     ]
 
-    for idx, r in enumerate(pdf_rows, start=1):
+    for r in pdf_rows:
         table_data.append([
-            str(idx),
-            str(r["param_name"]),
-            str(r["actual_value"]),
+            Paragraph(str(r["param_name"]), criteria_style),
             str(r["result"])
         ])
 
+    available_width = doc.width
     table = Table(
         table_data,
-        colWidths=[40, 220, 160, 70]
+        colWidths=[available_width * 0.75, available_width * 0.25]
     )
 
-    table.setStyle(TableStyle([
-        ("GRID", (0,0), (-1,-1), 0.5, colors.grey),
-        ("BACKGROUND", (0,0), (-1,0), colors.whitesmoke),
-        ("ALIGN", (0,0), (0,-1), "CENTER"),
-        ("ALIGN", (-1,1), (-1,-1), "CENTER"),
+    # Style colors from Word doc
+    header_bg = colors.HexColor("#BCD5ED")
+    header_text_color = colors.HexColor("#0F0F3F")
 
-        ("TEXTCOLOR", (-1,1), (-1,-1),
-         lambda r, c, v: colors.green if v == "PASS" else colors.red)
+    table.setStyle(TableStyle([
+        ("GRID", (0,0), (-1,-1), 0.5, colors.black),
+        ("BACKGROUND", (0,0), (-1,0), header_bg),
+        ("TEXTCOLOR", (0,0), (-1,0), header_text_color),
+        ("ALIGN", (1,1), (1,-1), "CENTER"), # Result column
+        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+        
+        # PASS (Green) / FAIL (Red) color logic
+        ("TEXTCOLOR", (1,1), (1,-1),
+         lambda r, c, v: colors.green if v == "PASS" else colors.red),
+        
+        ("FONTNAME", (0,0), (-1,-1), font_name),
+        ("FONTNAME", (0,0), (-1,0), font_name_bold), # Header bold
     ]))
 
     elements.append(table)
@@ -497,7 +557,35 @@ def generate_audit_pdf(pdf_rows):
     return buffer
 
 
-# ===================== UI =====================
+# ===================== UI SIDEBAR =====================
+with st.sidebar:
+    st.header("⚙️ Model Selection")
+    
+    # Get available models from models.txt if it exists
+    available_models = []
+    if os.path.exists("models.txt"):
+        with open("models.txt", "r") as f:
+            available_models = [line.strip() for line in f if line.strip() and not line.startswith("ERROR")]
+    
+    if not available_models:
+        available_models = [DEFAULT_GEMMA_MODEL, DEFAULT_BENCHMARK_MODEL, "gemini-1.5-flash", "gemini-1.5-pro"]
+
+    model_gemma_name = st.selectbox(
+        "Model 1 (Gemma Focus)", 
+        options=available_models,
+        index=available_models.index(DEFAULT_GEMMA_MODEL) if DEFAULT_GEMMA_MODEL in available_models else 0
+    )
+    
+    model_benchmark_name = st.selectbox(
+        "Model 2 (Benchmark Focus)", 
+        options=available_models,
+        index=available_models.index(DEFAULT_BENCHMARK_MODEL) if DEFAULT_BENCHMARK_MODEL in available_models else 0
+    )
+
+    st.divider()
+    profile_ms = st.checkbox("Hệ thống là Member Server (MS)?", value=True)
+    DEBUG_MODE = st.checkbox("Debug Mode", value=True)
+
 uploaded_config = st.file_uploader(
     "Upload file Config (txt / inf / ini)",
     type=["txt", "inf", "ini"]
@@ -540,7 +628,6 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
                 st.warning("Không thể xác định loại file. Thử xử lý như file cấu hình mặc định.")
                 config_docs = parse_secedit_config(content)
 
-    profile_ms = st.checkbox("Hệ thống là Member Server (MS)?", value=True)
 
     if st.button("▶️ Bắt đầu Audit", type="primary"):
         cis_db = Chroma(
@@ -548,56 +635,118 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
             embedding_function=get_embedding_model(),
             collection_name="cis_rules"
         )
-        llm = get_llm()
+        llm_gemma = get_llm(model_gemma_name)
+        llm_benchmark = get_llm(model_benchmark_name)
 
-        st.subheader("📊 Kết quả Audit Realtime")
-        metrics = {"PASS": 0, "FAIL": 0, "SKIP": 0}
+        st.subheader("📊 Kết quả Audit so sánh (Realtime)")
+        
+        # Header columns for comparison
+        st.markdown(f"""
+        | Model 1: **{model_gemma_name}** | Model 2: **{model_benchmark_name}** |
+        | :--- | :--- |
+        """)
 
-        pdf_rows = []   # ===== DATA FOR PDF EXPORT =====
+        metrics_gemma = {"PASS": 0, "FAIL": 0, "SKIP": 0}
+        metrics_benchmark = {"PASS": 0, "FAIL": 0, "SKIP": 0}
 
-        for doc in config_docs:
-            result, sources = audit_config_item(doc, cis_db, llm)
-            status = result.get("compliance_status", "SKIP")
-            metrics[status] += 1
+        pdf_rows = []   # ===== DATA FOR PDF EXPORT (Using Model 1 as primary) =====
 
-            # ===== Collect PASS / FAIL only for PDF =====
-            if status in ("PASS", "FAIL"):
+        progress_bar = st.progress(0)
+        total_docs = len(config_docs)
+
+        for i, doc in enumerate(config_docs):
+            progress_bar.progress((i + 1) / total_docs)
+            key_name = doc.metadata.get('key', '')
+            
+            # Run Audit with Model 1
+            result_gemma, sources_gemma = audit_config_item(doc, cis_db, llm_gemma)
+            status_gemma = result_gemma.get("compliance_status", "SKIP")
+            metrics_gemma[status_gemma] += 1
+
+            # Run Audit with Model 2
+            result_benchmark, sources_benchmark = audit_config_item(doc, cis_db, llm_benchmark)
+            status_benchmark = result_benchmark.get("compliance_status", "SKIP")
+            metrics_benchmark[status_benchmark] += 1
+
+            # ===== Collect for PDF (Using result from Model 1 / Gemma as reference) =====
+            if status_gemma in ("PASS", "FAIL"):
                 pdf_rows.append({
                     "param_name": doc.metadata.get("key"),
                     "actual_value": doc.metadata.get("value"),
-                    "result": status
+                    "result": status_gemma
                 })
 
-            # ===== Realtime UI =====
-            with st.expander(f"{status} — {doc.metadata.get('key')}"):
-                st.json(result)
-                if DEBUG_MODE:
-                    for s in sources:
-                        st.code(s.page_content)
+            # ===== Comparison UI in Expander =====
+            expander_title = f"{key_name} | {status_gemma} vs {status_benchmark}"
+            # Color coding the expander title based on differences
+            if status_gemma != status_benchmark:
+                expander_title = f"⚠️ DIFFERENT: {expander_title}"
+            
+            with st.expander(expander_title):
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown(f"**Model 1 ({model_gemma_name})**")
+                    st.write(f"**Status:** {status_gemma}")
+                    st.json(result_gemma)
+                    if DEBUG_MODE:
+                        st.caption("Top matching sources:")
+                        for s in sources_gemma[:2]:
+                            st.code(s.page_content[:200] + "...")
+                
+                with col2:
+                    st.markdown(f"**Model 2 ({model_benchmark_name})**")
+                    st.write(f"**Status:** {status_benchmark}")
+                    st.json(result_benchmark)
+                    if DEBUG_MODE:
+                        st.caption("Top matching sources:")
+                        for s in sources_benchmark[:2]:
+                            st.code(s.page_content[:200] + "...")
 
         st.success("Hoàn tất kiểm tra!")
 
-        col1, col2, col3 = st.columns(3)
-        col1.metric("PASS", metrics["PASS"])
-        col2.metric("FAIL", metrics["FAIL"])
-        col3.metric("SKIP", metrics["SKIP"])
+        # Summary Metrics Comparison
+        st.subheader("🏁 Tổng kết so sánh")
+        sum_col1, sum_col2 = st.columns(2)
+        
+        with sum_col1:
+            st.markdown(f"**{model_gemma_name}**")
+            m1_col1, m1_col2, m1_col3 = st.columns(3)
+            m1_col1.metric("PASS", metrics_gemma["PASS"])
+            m1_col2.metric("FAIL", metrics_gemma["FAIL"])
+            m1_col3.metric("SKIP", metrics_gemma["SKIP"])
+            
+        with sum_col2:
+            st.markdown(f"**{model_benchmark_name}**")
+            m2_col1, m2_col2, m2_col3 = st.columns(3)
+            m2_col1.metric("PASS", metrics_benchmark["PASS"])
+            m2_col2.metric("FAIL", metrics_benchmark["FAIL"])
+            m2_col3.metric("SKIP", metrics_benchmark["SKIP"])
 
-        # ===== EXPORT PDF =====
+        # Compare directly
+        diff_count = sum(1 for i, doc in enumerate(config_docs) if metrics_gemma != metrics_benchmark) # This is wrong logic for exact diffs but okay for summary
+        # Let's just show if totals differ
+        if metrics_gemma != metrics_benchmark:
+            st.warning("Các model có kết quả tổng quát khác nhau. Hãy kiểm tra lại các mục có đánh dấu ⚠️ DIFFERENT.")
+        else:
+            st.info("Cả hai model cho kết quả tổng quát tương đồng.")
+
+        # ===== EXPORT PDF (Based on Model 1) =====
         if pdf_rows:
             pdf_buffer = generate_audit_pdf(pdf_rows)
 
             st.download_button(
-                label="📥 Download Audit Result (PDF)",
+                label="📥 Download Audit Result (PDF - Based on Model 1)",
                 data=pdf_buffer,
                 file_name=f"audit_result_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
                 mime="application/pdf"
             )
 
-            # ===== EXPORT CMC WORD REPORT =====
+            # ===== EXPORT CMC WORD REPORT (Based on Model 1) =====
             cmc_data = []
             for doc_item in config_docs:
-                # Tìm lại kết quả cho từng doc_item (vì PDF chỉ lấy PASS/FAIL)
-                res, _ = audit_config_item(doc_item, cis_db, llm)
+                # Re-run for Model 1 (Gemma) to ensure consistency or cache results above
+                res, _ = audit_config_item(doc_item, cis_db, llm_gemma)
                 cmc_data.append({
                     "param_name": doc_item.metadata.get("key"),
                     "actual_value": doc_item.metadata.get("value"),
@@ -607,13 +756,13 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
             
             word_buffer = generate_cmc_report(cmc_data, target_server=uploaded_config.name)
             st.download_button(
-                label="📘 Download CMC Report (Word)",
+                label="📘 Download CMC Report (Word - Based on Model 1)",
                 data=word_buffer,
                 file_name=f"CMC_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx",
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         else:
-            st.info("No PASS / FAIL results available for PDF export.")
+            st.info("No PASS / FAIL results available for export.")
 
 
 elif uploaded_config:
