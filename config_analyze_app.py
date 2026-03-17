@@ -7,6 +7,8 @@ import io
 import re
 from typing import Dict, Any, List, Optional
 import google.generativeai as genai
+import hashlib
+from pathlib import Path
 
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -31,6 +33,8 @@ load_dotenv()  # ⬅️ BẮT BUỘC
 
 # ===================== CONFIG =====================
 CIS_DB_PATH = "./cis_vector_db"
+CACHE_DIR = Path("./.llm_cache")
+CACHE_DIR.mkdir(exist_ok=True)
 
 # ===================== LLM CONFIG =====================
 DEFAULT_GEMMA_MODEL = "gemma-3-27b-it" 
@@ -69,12 +73,43 @@ def invoke_chain_with_retry(chain, params, max_retries=6, base_delay=10):
         try:
             return chain.invoke(params)
         except Exception as e:
-            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e) or "Quota" in str(e):
+            err_msg = str(e)
+            if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg or "Quota" in err_msg:
+                # Phân biệt giới hạn phút và giới hạn ngày
+                if "daily" in err_msg.lower() or "limit: 20" in err_msg:
+                    st.error("❌ Hết quota hàng ngày (Daily Quota Exceeded). Vui lòng thử lại sau hoặc đổi model/API key.")
+                    raise Exception("QUOTA_EXHAUSTED_DAILY")
+                
                 if attempt == max_retries - 1:
                     raise
-                time.sleep(base_delay * (attempt + 1))
+                wait_time = base_delay * (attempt + 1)
+                st.warning(f"⚠️ Hit Rate Limit. Thử lại sau {wait_time}s... (Lần {attempt+1}/{max_retries})")
+                time.sleep(wait_time)
             else:
                 raise
+
+def get_cache_path(key_data: str) -> Path:
+    """Tạo path file cache dựa trên MD5 hash của key."""
+    hash_key = hashlib.md5(key_data.encode()).hexdigest()
+    return CACHE_DIR / f"{hash_key}.json"
+
+def get_cached_response(cache_key: str) -> Optional[Any]:
+    cache_path = get_cache_path(cache_key)
+    if cache_path.exists():
+        try:
+            with open(cache_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return None
+    return None
+
+def save_cached_response(cache_key: str, data: Any):
+    cache_path = get_cache_path(cache_key)
+    try:
+        with open(cache_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Error saving cache: {e}")
 
 def detect_encoding(file_content: bytes):
     return chardet.detect(file_content).get("encoding")
@@ -199,6 +234,14 @@ Value: {value}
         """)
     ])
 
+    # Caching key: section + key + value + model_name (from llm)
+    model_name = getattr(llm, "model", "default")
+    cache_key = f"norm_{config_doc.metadata['section']}_{config_doc.metadata['key']}_{config_doc.metadata['value']}_{model_name}"
+    
+    cached = get_cached_response(cache_key)
+    if cached:
+        return cached
+
     chain = prompt | llm | StrOutputParser()
 
     try:
@@ -218,9 +261,12 @@ Value: {value}
         if "normalized_concept" not in data or "actual_value" not in data:
             raise ValueError("Missing required fields")
 
+        save_cached_response(cache_key, data)
         return data
 
-    except Exception:
+    except Exception as e:
+        if str(e) == "QUOTA_EXHAUSTED_DAILY":
+            raise e
         # 🔒 SAFE FALLBACK (KHÔNG CRASH)
         return {
             "normalized_concept": config_doc.metadata["key"],
@@ -318,8 +364,18 @@ HÃY CHỌN RULE ID KHỚP NHẤT:
     ])
 
     candidate_text = ""
+    candidate_ids = []
     for c in candidates:
         candidate_text += f"- Rule ID: {c['rule_id']} | Title: {c['title']}\n"
+        candidate_ids.append(c['rule_id'])
+
+    # Caching key
+    model_name = getattr(llm, "model", "default")
+    cache_key = f"select_{key_name}_{section_name}_{','.join(candidate_ids)}_{model_name}"
+    
+    cached = get_cached_response(cache_key)
+    if cached:
+        return cached
 
     chain = prompt | llm | StrOutputParser()
     result = invoke_chain_with_retry(chain, {
@@ -331,7 +387,13 @@ HÃY CHỌN RULE ID KHỚP NHẤT:
     # Kiểm tra xem kết quả có nằm trong danh sách ID không
     valid_ids = [c["rule_id"] for c in candidates]
     if result in valid_ids:
+        save_cached_response(cache_key, result)
         return result
+    
+    if result == "NONE":
+        save_cached_response(cache_key, "NONE")
+        return "NONE"
+    
     return None
 
 # ===================== AUDIT CORE =====================
@@ -702,6 +764,12 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
                         st.caption("Top matching sources:")
                         for s in sources_benchmark[:2]:
                             st.code(s.page_content[:200] + "...")
+        
+        except Exception as global_e:
+            if str(global_e) == "QUOTA_EXHAUSTED_DAILY":
+                st.error("🛑 Dừng quá trình Audit do hết quota hàng ngày.")
+            else:
+                st.error(f"❌ Có lỗi xảy ra: {global_e}")
 
         st.success("Hoàn tất kiểm tra!")
 
