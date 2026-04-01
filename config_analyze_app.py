@@ -37,8 +37,7 @@ CACHE_DIR = Path("./.llm_cache")
 CACHE_DIR.mkdir(exist_ok=True)
 
 # ===================== LLM CONFIG =====================
-DEFAULT_GEMMA_MODEL = "gemma-3-27b-it" 
-DEFAULT_BENCHMARK_MODEL = "gemini-2.0-flash"
+DEFAULT_MODEL = "gemma-3-27b-it" 
 
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 
@@ -46,6 +45,20 @@ DEBUG_MODE = True
 
 st.set_page_config(page_title="Config Audit Agent", layout="wide")
 st.title("🕵️ Config Audit AI Agent")
+
+# ===================== SESSION STATE =====================
+if "audit_done" not in st.session_state:
+    st.session_state.audit_done = False
+if "audit_results" not in st.session_state:
+    st.session_state.audit_results = []
+if "metrics" not in st.session_state:
+    st.session_state.metrics = {"PASS": 0, "FAIL": 0, "SKIP": 0}
+if "pdf_buffer" not in st.session_state:
+    st.session_state.pdf_buffer = None
+if "word_buffer" not in st.session_state:
+    st.session_state.word_buffer = None
+if "last_file_name" not in st.session_state:
+    st.session_state.last_file_name = ""
 
 st.markdown("""
 Hệ thống tự động so sánh file cấu hình (SecEdit, Registry dump...) với CIS Benchmark.
@@ -573,10 +586,11 @@ def generate_audit_pdf(pdf_rows):
     elements.append(Spacer(1, 24))
 
     # ===== TABLE =====
-    # Two columns: Criteria and Result
+    # Three columns: Item, Reference, and Result
     table_data = [
         [
-            Paragraph(f"<b>HẠNG MỤC KIỂM TRA, ĐÁNH GIÁ</b>", header_style),
+            Paragraph(f"<b>HẠNG MỤC KIỂM TRA</b>", header_style),
+            Paragraph(f"<b>THAM CHIẾU CIS RULE</b>", header_style),
             Paragraph(f"<b>KẾT QUẢ</b>", header_style)
         ]
     ]
@@ -584,13 +598,14 @@ def generate_audit_pdf(pdf_rows):
     for r in pdf_rows:
         table_data.append([
             Paragraph(str(r["param_name"]), criteria_style),
+            Paragraph(str(r["rule_ref"]), criteria_style),
             str(r["result"])
         ])
 
     available_width = doc.width
     table = Table(
         table_data,
-        colWidths=[available_width * 0.75, available_width * 0.25]
+        colWidths=[available_width * 0.40, available_width * 0.45, available_width * 0.15]
     )
 
     # Style colors from Word doc
@@ -601,11 +616,11 @@ def generate_audit_pdf(pdf_rows):
         ("GRID", (0,0), (-1,-1), 0.5, colors.black),
         ("BACKGROUND", (0,0), (-1,0), header_bg),
         ("TEXTCOLOR", (0,0), (-1,0), header_text_color),
-        ("ALIGN", (1,1), (1,-1), "CENTER"), # Result column
+        ("ALIGN", (2,1), (2,-1), "CENTER"), # Result column
         ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
         
         # PASS (Green) / FAIL (Red) color logic
-        ("TEXTCOLOR", (1,1), (1,-1),
+        ("TEXTCOLOR", (2,1), (2,-1),
          lambda r, c, v: colors.green if v == "PASS" else colors.red),
         
         ("FONTNAME", (0,0), (-1,-1), font_name),
@@ -630,18 +645,12 @@ with st.sidebar:
             available_models = [line.strip() for line in f if line.strip() and not line.startswith("ERROR")]
     
     if not available_models:
-        available_models = [DEFAULT_GEMMA_MODEL, DEFAULT_BENCHMARK_MODEL, "gemini-1.5-flash", "gemini-1.5-pro"]
+        available_models = [DEFAULT_MODEL, "gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
 
-    model_gemma_name = st.selectbox(
-        "Model 1 (Gemma Focus)", 
+    model_name = st.selectbox(
+        "Lựa chọn Model", 
         options=available_models,
-        index=available_models.index(DEFAULT_GEMMA_MODEL) if DEFAULT_GEMMA_MODEL in available_models else 0
-    )
-    
-    model_benchmark_name = st.selectbox(
-        "Model 2 (Benchmark Focus)", 
-        options=available_models,
-        index=available_models.index(DEFAULT_BENCHMARK_MODEL) if DEFAULT_BENCHMARK_MODEL in available_models else 0
+        index=available_models.index(DEFAULT_MODEL) if DEFAULT_MODEL in available_models else 0
     )
 
     st.divider()
@@ -692,145 +701,128 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
 
 
     if st.button("▶️ Bắt đầu Audit", type="primary"):
+        # Reset state for new audit
+        st.session_state.audit_done = False
+        st.session_state.audit_results = []
+        st.session_state.metrics = {"PASS": 0, "FAIL": 0, "SKIP": 0}
+        st.session_state.pdf_buffer = None
+        st.session_state.word_buffer = None
+        st.session_state.last_file_name = uploaded_config.name
+
         cis_db = Chroma(
             persist_directory=CIS_DB_PATH,
             embedding_function=get_embedding_model(),
             collection_name="cis_rules"
         )
-        llm_gemma = get_llm(model_gemma_name)
-        llm_benchmark = get_llm(model_benchmark_name)
+        llm = get_llm(model_name)
 
-        st.subheader("📊 Kết quả Audit so sánh (Realtime)")
+        st.subheader("📊 Đang thực hiện Audit...")
         
-        # Header columns for comparison
-        st.markdown(f"""
-        | Model 1: **{model_gemma_name}** | Model 2: **{model_benchmark_name}** |
-        | :--- | :--- |
-        """)
-
-        metrics_gemma = {"PASS": 0, "FAIL": 0, "SKIP": 0}
-        metrics_benchmark = {"PASS": 0, "FAIL": 0, "SKIP": 0}
-
-        pdf_rows = []   # ===== DATA FOR PDF EXPORT (Using Model 1 as primary) =====
-
+        pdf_rows = []
         progress_bar = st.progress(0)
         total_docs = len(config_docs)
 
-        for i, doc in enumerate(config_docs):
-            progress_bar.progress((i + 1) / total_docs)
-            key_name = doc.metadata.get('key', '')
-            
-            # Run Audit with Model 1
-            result_gemma, sources_gemma = audit_config_item(doc, cis_db, llm_gemma)
-            status_gemma = result_gemma.get("compliance_status", "SKIP")
-            metrics_gemma[status_gemma] += 1
+        try:
+            for i, doc in enumerate(config_docs):
+                progress_bar.progress((i + 1) / total_docs)
+                key_name = doc.metadata.get('key', '')
+                
+                # Run Audit
+                result, sources = audit_config_item(doc, cis_db, llm)
+                status = result.get("compliance_status", "SKIP")
+                st.session_state.metrics[status] += 1
 
-            # Run Audit with Model 2
-            result_benchmark, sources_benchmark = audit_config_item(doc, cis_db, llm_benchmark)
-            status_benchmark = result_benchmark.get("compliance_status", "SKIP")
-            metrics_benchmark[status_benchmark] += 1
-
-            # ===== Collect for PDF (Using result from Model 1 / Gemma as reference) =====
-            if status_gemma in ("PASS", "FAIL"):
-                pdf_rows.append({
-                    "param_name": doc.metadata.get("key"),
-                    "actual_value": doc.metadata.get("value"),
-                    "result": status_gemma
+                # Save to session state
+                st.session_state.audit_results.append({
+                    "key": key_name,
+                    "status": status,
+                    "result": result,
+                    "sources": sources
                 })
 
-            # ===== Comparison UI in Expander =====
-            expander_title = f"{key_name} | {status_gemma} vs {status_benchmark}"
-            # Color coding the expander title based on differences
-            if status_gemma != status_benchmark:
-                expander_title = f"⚠️ DIFFERENT: {expander_title}"
+                # ===== Collect for PDF =====
+                if status in ("PASS", "FAIL"):
+                    rule_id = result.get("rule_id", "N/A")
+                    rule_title = result.get("title", "N/A")
+                    pdf_rows.append({
+                        "param_name": doc.metadata.get("key"),
+                        "actual_value": doc.metadata.get("value"),
+                        "result": status,
+                        "rule_ref": f"{rule_id}: {rule_title}"
+                    })
+
+            st.session_state.audit_done = True
             
-            with st.expander(expander_title):
-                col1, col2 = st.columns(2)
+            # Generate PDF buffer once
+            if pdf_rows:
+                st.session_state.pdf_buffer = generate_audit_pdf(pdf_rows).getvalue()
                 
-                with col1:
-                    st.markdown(f"**Model 1 ({model_gemma_name})**")
-                    st.write(f"**Status:** {status_gemma}")
-                    st.json(result_gemma)
-                    if DEBUG_MODE:
-                        st.caption("Top matching sources:")
-                        for s in sources_gemma[:2]:
-                            st.code(s.page_content[:200] + "...")
-                
-                with col2:
-                    st.markdown(f"**Model 2 ({model_benchmark_name})**")
-                    st.write(f"**Status:** {status_benchmark}")
-                    st.json(result_benchmark)
-                    if DEBUG_MODE:
-                        st.caption("Top matching sources:")
-                        for s in sources_benchmark[:2]:
-                            st.code(s.page_content[:200] + "...")
-        
+                # Generate CMC Data
+                cmc_data = []
+                for res_item in st.session_state.audit_results:
+                    # We can use the results already computed
+                    res = res_item["result"]
+                    cmc_data.append({
+                        "param_name": res_item["key"],
+                        "actual_value": res.get("actual", ""),
+                        "result": res.get("compliance_status", "SKIP"),
+                        "remediation": res.get("remediation", "")
+                    })
+                st.session_state.word_buffer = generate_cmc_report(cmc_data, target_server=uploaded_config.name).getvalue()
+
+            st.rerun()
+
         except Exception as global_e:
             if str(global_e) == "QUOTA_EXHAUSTED_DAILY":
                 st.error("🛑 Dừng quá trình Audit do hết quota hàng ngày.")
             else:
                 st.error(f"❌ Có lỗi xảy ra: {global_e}")
 
-        st.success("Hoàn tất kiểm tra!")
-
-        # Summary Metrics Comparison
-        st.subheader("🏁 Tổng kết so sánh")
-        sum_col1, sum_col2 = st.columns(2)
+    # ===================== DISPLAY RESULTS (Outside button block) =====================
+    if st.session_state.audit_done:
+        st.subheader(f"📊 Kết quả Audit: {st.session_state.last_file_name}")
         
-        with sum_col1:
-            st.markdown(f"**{model_gemma_name}**")
-            m1_col1, m1_col2, m1_col3 = st.columns(3)
-            m1_col1.metric("PASS", metrics_gemma["PASS"])
-            m1_col2.metric("FAIL", metrics_gemma["FAIL"])
-            m1_col3.metric("SKIP", metrics_gemma["SKIP"])
-            
-        with sum_col2:
-            st.markdown(f"**{model_benchmark_name}**")
-            m2_col1, m2_col2, m2_col3 = st.columns(3)
-            m2_col1.metric("PASS", metrics_benchmark["PASS"])
-            m2_col2.metric("FAIL", metrics_benchmark["FAIL"])
-            m2_col3.metric("SKIP", metrics_benchmark["SKIP"])
+        # Summary Metrics
+        m_col1, m_col2, m_col3 = st.columns(3)
+        m_col1.metric("PASS", st.session_state.metrics["PASS"])
+        m_col2.metric("FAIL", st.session_state.metrics["FAIL"])
+        m_col3.metric("SKIP", st.session_state.metrics["SKIP"])
 
-        # Compare directly
-        diff_count = sum(1 for i, doc in enumerate(config_docs) if metrics_gemma != metrics_benchmark) # This is wrong logic for exact diffs but okay for summary
-        # Let's just show if totals differ
-        if metrics_gemma != metrics_benchmark:
-            st.warning("Các model có kết quả tổng quát khác nhau. Hãy kiểm tra lại các mục có đánh dấu ⚠️ DIFFERENT.")
-        else:
-            st.info("Cả hai model cho kết quả tổng quát tương đồng.")
-
-        # ===== EXPORT PDF (Based on Model 1) =====
-        if pdf_rows:
-            pdf_buffer = generate_audit_pdf(pdf_rows)
-
-            st.download_button(
-                label="📥 Download Audit Result (PDF - Based on Model 1)",
-                data=pdf_buffer,
+        # Action Buttons
+        dl_col1, dl_col2 = st.columns(2)
+        if st.session_state.pdf_buffer:
+            dl_col1.download_button(
+                label="📥 Download Audit Result (PDF)",
+                data=st.session_state.pdf_buffer,
                 file_name=f"audit_result_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
                 mime="application/pdf"
             )
-
-            # ===== EXPORT CMC WORD REPORT (Based on Model 1) =====
-            cmc_data = []
-            for doc_item in config_docs:
-                # Re-run for Model 1 (Gemma) to ensure consistency or cache results above
-                res, _ = audit_config_item(doc_item, cis_db, llm_gemma)
-                cmc_data.append({
-                    "param_name": doc_item.metadata.get("key"),
-                    "actual_value": doc_item.metadata.get("value"),
-                    "result": res.get("compliance_status", "SKIP"),
-                    "remediation": res.get("remediation", "")
-                })
-            
-            word_buffer = generate_cmc_report(cmc_data, target_server=uploaded_config.name)
-            st.download_button(
-                label="📘 Download CMC Report (Word - Based on Model 1)",
-                data=word_buffer,
+        if st.session_state.word_buffer:
+            dl_col2.download_button(
+                label="📘 Download CMC Report (Word)",
+                data=st.session_state.word_buffer,
                 file_name=f"CMC_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx",
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
-        else:
-            st.info("No PASS / FAIL results available for export.")
+
+        st.divider()
+
+        # Detailed results list
+        for res_item in st.session_state.audit_results:
+            key_name = res_item["key"]
+            status = res_item["status"]
+            result = res_item["result"]
+            sources = res_item["sources"]
+
+            with st.expander(f"{key_name} | {status}"):
+                st.write(f"**Trạng thái:** {status}")
+                st.json(result)
+                if DEBUG_MODE:
+                    st.caption("Các nguồn (Rule) tham chiếu phù hợp:")
+                    for s in sources[:2]:
+                        # Check if s is a Document object (it should be)
+                        content = s.page_content if hasattr(s, "page_content") else str(s)
+                        st.code(content[:250] + "...")
 
 
 elif uploaded_config:

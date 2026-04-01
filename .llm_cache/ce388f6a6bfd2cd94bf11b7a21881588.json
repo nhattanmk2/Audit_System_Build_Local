@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Local Security Authority (LSA) Privilege - SeAuditPrivilege",
+  "is_security_relevant": true,
+  "actual_value": "*S-1-5-19,*S-1-5-20"
+}

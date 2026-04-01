@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Account Lockout Policy - Audit Both Success and Failure",
+  "is_security_relevant": true,
+  "actual_value": "Success and Failure"
+}
