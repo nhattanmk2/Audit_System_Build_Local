@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Netlogon Service Secure Channel Encryption Requirement",
-  "is_security_relevant": true,
-  "actual_value": "4,1"
+  "response": {
+    "normalized_concept": "Netlogon Secure Channel Sealing Requirement",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\SealSecureChannel",
+    "value": "4,1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:05.403090"
 }

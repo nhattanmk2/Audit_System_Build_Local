@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Remote Interactive Logon Right",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-32-544,*S-1-5-32-555"
+  "response": {
+    "normalized_concept": "Remote Desktop Services – Remote Interactive Logon Right (SeRemoteInteractiveLogonRight) assignment",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-32-544,*S-1-5-32-555"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeRemoteInteractiveLogonRight",
+    "value": "*S-1-5-32-544,*S-1-5-32-555",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:33:24.276879"
 }

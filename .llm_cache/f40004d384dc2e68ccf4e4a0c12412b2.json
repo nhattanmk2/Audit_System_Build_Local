@@ -1,1 +1,15 @@
-"2.3.10.11"
+{
+  "response": "2.3.10.11",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa",
+    "key": "RestrictRemoteSAM",
+    "candidates": [
+      "2.3.10.11",
+      "18.4.1",
+      "2.3.11.14"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:18:18.739646"
+}

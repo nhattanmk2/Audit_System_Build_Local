@@ -1,0 +1,15 @@
+{
+  "response": "17.5.2",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Group Membership",
+    "candidates": [
+      "17.5.2",
+      "17.2.5",
+      "17.2.3"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:36:15.023043"
+}

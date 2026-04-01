@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Require Secure Channel Signing for Netlogon (Netlogon SignSecureChannel)",
-  "is_security_relevant": true,
-  "actual_value": "1"
-}

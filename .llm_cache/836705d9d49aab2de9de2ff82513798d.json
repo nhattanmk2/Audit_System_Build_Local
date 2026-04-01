@@ -1,0 +1,15 @@
+{
+  "response": "2.3.17.2",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\ConsentPromptBehaviorAdmin",
+    "candidates": [
+      "2.3.17.2",
+      "2.3.17.6",
+      "2.3.17.3"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:24:05.016396"
+}

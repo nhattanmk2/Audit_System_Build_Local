@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Display of Last Logged-On Username on Windows Logon Screen (System Policies - DontDisplayLastUsername)",
-  "is_security_relevant": true,
-  "actual_value": "0"
-}

@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Local Security Authority (LSA) setting controlling whether the Everyone group includes anonymous logon accounts",
-  "is_security_relevant": true,
-  "actual_value": "0"
-}

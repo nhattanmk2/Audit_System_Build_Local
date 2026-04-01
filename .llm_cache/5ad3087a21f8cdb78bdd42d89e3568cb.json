@@ -1,1 +1,14 @@
-"2.2.14"
+{
+  "response": "2.2.14",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeCreatePagefilePrivilege",
+    "candidates": [
+      "2.2.14",
+      "2.2.17"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:55.030042"
+}

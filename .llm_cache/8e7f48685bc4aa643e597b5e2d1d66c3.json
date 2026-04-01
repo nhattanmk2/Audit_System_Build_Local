@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Print Spooler Service Description",
-  "is_security_relevant": true,
-  "actual_value": "@%systemroot%\\system32\\spoolsv.exe,-2"
-}

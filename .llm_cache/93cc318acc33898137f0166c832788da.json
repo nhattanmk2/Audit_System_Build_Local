@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Windows Firewall Service Rule-Level Policy Change Audit Setting",
-  "is_security_relevant": true,
-  "actual_value": "Success and Failure"
-}

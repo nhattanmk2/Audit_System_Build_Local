@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Windows System Policy: Smart Card Force Option",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
+  "response": {
+    "normalized_concept": "Force Secure Channel Enforcement (ScForceOption) for system communications",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\ScForceOption",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:25:08.098135"
 }

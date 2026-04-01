@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Windows Logon Shell Application Runtime Executable",
-  "is_security_relevant": true,
-  "actual_value": "ShellAppRuntime.exe"
-}

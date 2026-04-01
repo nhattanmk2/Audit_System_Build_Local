@@ -1,0 +1,15 @@
+{
+  "response": "17.5.4",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Event Audit",
+    "key": "AuditLogonEvents",
+    "candidates": [
+      "17.5.5",
+      "17.5.4",
+      "17.5.3"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:22:21.331357"
+}

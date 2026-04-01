@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Local Security Authority (LSA) NoLMHash setting – disable storage of LAN Manager (LM) password hashes",
-  "is_security_relevant": true,
-  "actual_value": "1"
-}

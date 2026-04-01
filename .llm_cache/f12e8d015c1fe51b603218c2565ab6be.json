@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Print Spooler Service Description",
-  "is_security_relevant": true,
-  "actual_value": "@%systemroot%\\system32\\spoolsv.exe,-2"
+  "response": {
+    "normalized_concept": "Print Spooler Service Description",
+    "is_security_relevant": true,
+    "actual_value": "@%systemroot%\\system32\\spoolsv.exe,-2"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Spooler",
+    "key": "Description",
+    "value": "@%systemroot%\\system32\\spoolsv.exe,-2",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:19:28.647429"
 }

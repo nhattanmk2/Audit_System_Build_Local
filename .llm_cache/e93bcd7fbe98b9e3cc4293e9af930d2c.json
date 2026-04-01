@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "System Time Privilege Assignment",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-19,*S-1-5-32-544"
+  "response": {
+    "normalized_concept": "System Time Change Privilege Assignment (SeSystemtimePrivilege)",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-19,*S-1-5-32-544"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeSystemtimePrivilege",
+    "value": "*S-1-5-19,*S-1-5-32-544",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:47.249958"
 }

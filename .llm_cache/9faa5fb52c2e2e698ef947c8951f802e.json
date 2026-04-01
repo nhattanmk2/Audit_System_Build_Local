@@ -1,1 +1,15 @@
-"2.3.7.7"
+{
+  "response": "2.3.7.7",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\currentVersion\\winlogon",
+    "key": "PasswordExpiryWarning",
+    "candidates": [
+      "2.3.7.7",
+      "18.9.25.2",
+      "2.3.6.5"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:14:44.755015"
+}

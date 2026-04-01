@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa",
+    "key": "LimitBlankPasswordUse",
+    "candidates": [
+      "2.3.1.2",
+      "1.1.6",
+      "18.9.25.5"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:17:32.425824"
+}

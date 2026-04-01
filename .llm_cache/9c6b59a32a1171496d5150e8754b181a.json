@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Filtering Platform Connection",
+    "candidates": [
+      "9.3.9",
+      "9.1.7",
+      "9.2.7"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:37:16.217880"
+}

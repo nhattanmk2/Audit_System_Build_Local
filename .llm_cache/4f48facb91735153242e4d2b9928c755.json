@@ -1,0 +1,15 @@
+{
+  "response": "2.2.30",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeRemoteShutdownPrivilege",
+    "candidates": [
+      "2.2.30",
+      "2.3.13.1",
+      "18.9.35.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:31:06.422910"
+}

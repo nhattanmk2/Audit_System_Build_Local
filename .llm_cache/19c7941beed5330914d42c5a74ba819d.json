@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Windows Logon Virtual Memory Applet Command",
-  "is_security_relevant": true,
-  "actual_value": "SystemPropertiesPerformance.exe /pagefile"
-}

@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "SMB/CIFS Client Allow NTLMv1",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
-}

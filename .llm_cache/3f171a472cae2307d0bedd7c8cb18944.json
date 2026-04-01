@@ -1,0 +1,14 @@
+{
+  "response": "17.6.2",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "File Share",
+    "candidates": [
+      "17.6.2",
+      "17.6.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:37:00.655575"
+}

@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Privilege Rights Service Impersonation Privilege",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-6"
+  "response": {
+    "normalized_concept": "Impersonate a client privilege (SeImpersonatePrivilege) assignment",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-6"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeImpersonatePrivilege",
+    "value": "*S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-6",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:33:42.942037"
 }

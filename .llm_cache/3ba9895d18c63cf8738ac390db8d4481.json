@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Delegation of Session User Impersonation Privilege for Administrators Group",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-32-544"
+  "response": {
+    "normalized_concept": "Privilege Rights – Delegated Session User Impersonation Right",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-32-544"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeDelegateSessionUserImpersonatePrivilege",
+    "value": "*S-1-5-32-544",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:34:23.435341"
 }

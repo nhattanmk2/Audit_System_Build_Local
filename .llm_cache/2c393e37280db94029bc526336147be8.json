@@ -1,1 +1,15 @@
-"17.2.5"
+{
+  "response": "17.2.5",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Security Group Management",
+    "candidates": [
+      "17.2.5",
+      "17.5.2",
+      "17.2.3"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:13:23.718739"
+}

@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\MaximumPasswordAge",
+    "candidates": [
+      "2.3.6.5",
+      "18.9.25.6",
+      "1.1.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:08:19.752542"
+}

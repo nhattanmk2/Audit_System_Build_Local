@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Server Service GUID",
-  "is_security_relevant": true,
-  "actual_value": "97 133 4 16 68 233 31 79 158 20 9 47 56 126 97 85"
+  "response": {
+    "normalized_concept": "Server Message Block (SMB) Service Globally Unique Identifier (GUID)",
+    "is_security_relevant": true,
+    "actual_value": "97 133 4 16 68 233 31 79 158 20 9 47 56 126 97 85"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
+    "key": "Guid",
+    "value": "97 133 4 16 68 233 31 79 158 20 9 47 56 126 97 85",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:18:59.188314"
 }

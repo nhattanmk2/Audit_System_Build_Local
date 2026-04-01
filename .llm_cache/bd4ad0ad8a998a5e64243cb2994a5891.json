@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Local Security Authority (LSA) Security Policy - Deny Remote Interactive Logon Right",
-  "is_security_relevant": true,
-  "actual_value": "ansibleadmin"
+  "response": {
+    "normalized_concept": "Local Security Authority (LSA) Security Policy - Deny Remote Interactive Logon Right",
+    "is_security_relevant": true,
+    "actual_value": "ansibleadmin"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeDenyRemoteInteractiveLogonRight",
+    "value": "ansibleadmin",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:10:27.580552"
 }

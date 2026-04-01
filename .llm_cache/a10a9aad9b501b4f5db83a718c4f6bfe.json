@@ -1,0 +1,14 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\ValidateAdminCodeSignatures",
+    "candidates": [
+      "2.3.17.1",
+      "18.10.15.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:25:34.514811"
+}

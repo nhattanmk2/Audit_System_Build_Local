@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Netlogon Service Maximum Password Age",
-  "is_security_relevant": true,
-  "actual_value": "4,30"
+  "response": {
+    "normalized_concept": "Netlogon Machine Account Password Maximum Age",
+    "is_security_relevant": true,
+    "actual_value": "4,30"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\MaximumPasswordAge",
+    "value": "4,30",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:29:42.011967"
 }

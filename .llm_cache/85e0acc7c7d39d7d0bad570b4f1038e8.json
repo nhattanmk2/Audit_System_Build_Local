@@ -1,1 +1,15 @@
-"2.3.11.5"
+{
+  "response": "2.3.11.5",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa",
+    "key": "NoLmHash",
+    "candidates": [
+      "2.3.11.5",
+      "18.10.43.7.1",
+      "18.10.18.3"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:17:35.814066"
+}

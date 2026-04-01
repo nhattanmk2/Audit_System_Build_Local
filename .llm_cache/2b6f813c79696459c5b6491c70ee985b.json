@@ -1,0 +1,15 @@
+{
+  "response": "2.2.31",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeAuditPrivilege",
+    "candidates": [
+      "17.8.1",
+      "2.2.31",
+      "17.2.6"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:31:14.508182"
+}

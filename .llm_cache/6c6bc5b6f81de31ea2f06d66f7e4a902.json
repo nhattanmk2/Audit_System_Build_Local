@@ -1,0 +1,15 @@
+{
+  "response": "17.8.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Event Audit",
+    "key": "AuditPrivilegeUse",
+    "candidates": [
+      "17.8.1",
+      "17.6.3",
+      "17.6.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:22:38.756201"
+}

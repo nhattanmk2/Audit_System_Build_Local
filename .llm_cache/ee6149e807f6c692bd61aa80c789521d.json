@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Local Security Authority (LSA) MSV1_0 Authentication Package - IIS Sub Authority",
-  "is_security_relevant": true,
-  "actual_value": "IISSUBA"
+  "response": {
+    "normalized_concept": "Local Security Authority (LSA) MSV1_0 Authentication Package - IIS Sub Authority",
+    "is_security_relevant": true,
+    "actual_value": "IISSUBA"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0",
+    "key": "Auth132",
+    "value": "IISSUBA",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:18:21.473749"
 }

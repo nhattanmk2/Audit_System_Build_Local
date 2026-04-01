@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "NewGuestName",
+    "candidates": [
+      "2.3.1.1",
+      "2.2.22",
+      "2.2.25"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:38.745141"
+}

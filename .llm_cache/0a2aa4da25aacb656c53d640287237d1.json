@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeInteractiveLogonRight",
+    "candidates": [
+      "2.3.7.2",
+      "2.3.7.1",
+      "2.3.7.6"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:32:05.760264"
+}

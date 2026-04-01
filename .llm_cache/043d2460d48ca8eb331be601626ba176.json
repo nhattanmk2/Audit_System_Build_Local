@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "IPsec Quick Mode Logging",
-  "is_security_relevant": true,
-  "actual_value": "Success and Failure"
+  "response": {
+    "normalized_concept": "IPsec Quick Mode Event Logging (Success and Failure)",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "IPsec Quick Mode",
+    "value": "Success and Failure",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:35:34.981612"
 }

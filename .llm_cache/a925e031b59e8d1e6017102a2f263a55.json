@@ -1,0 +1,15 @@
+{
+  "response": "1.2.3",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "AllowAdministratorLockout",
+    "candidates": [
+      "1.2.3",
+      "2.3.17.1",
+      "18.10.81.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:18.775141"
+}

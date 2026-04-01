@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Anonymous Access Restriction Level",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
+  "response": {
+    "normalized_concept": "Local Security Authority (LSA) Anonymous Access Restriction Level",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\RestrictAnonymous",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:27:14.300358"
 }

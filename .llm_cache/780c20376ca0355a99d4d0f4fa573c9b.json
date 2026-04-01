@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Event Audit Policy - Audit Directory Service Access",
-  "is_security_relevant": true,
-  "actual_value": "3"
+  "response": {
+    "normalized_concept": "Event Audit Policy Change Auditing",
+    "is_security_relevant": true,
+    "actual_value": "3"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Event Audit",
+    "key": "AuditPolicyChange",
+    "value": "3",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:05:08.562067"
 }

@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Local Security Authority (LSA) Privilege: SeProfileSingleProcessPrivilege",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-32-544"
-}

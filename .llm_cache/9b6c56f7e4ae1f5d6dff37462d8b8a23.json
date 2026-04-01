@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "User / Device Claims",
+    "candidates": [
+      "18.9.7.2",
+      "2.2.35",
+      "18.9.19.6"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:36:07.202851"
+}

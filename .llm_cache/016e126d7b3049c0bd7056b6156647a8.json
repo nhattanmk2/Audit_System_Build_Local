@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeDenyRemoteInteractiveLogonRight",
+    "candidates": [
+      "2.2.26",
+      "2.2.27",
+      "2.2.9"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:33:37.592886"
+}

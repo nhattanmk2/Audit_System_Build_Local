@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Software Version Revision Number",
-  "is_security_relevant": false,
-  "actual_value": "1"
+  "response": {
+    "normalized_concept": "Software Version Revision",
+    "is_security_relevant": false,
+    "actual_value": "1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Revision",
+    "value": "1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:34:34.273412"
 }

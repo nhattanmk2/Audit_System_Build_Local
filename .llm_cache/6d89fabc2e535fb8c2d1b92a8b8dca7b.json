@@ -1,0 +1,14 @@
+{
+  "response": "2.2.37",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeBatchLogonRight",
+    "candidates": [
+      "2.2.37",
+      "2.2.23"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:31:46.233812"
+}

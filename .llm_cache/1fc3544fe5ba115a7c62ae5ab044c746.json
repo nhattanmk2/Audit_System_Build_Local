@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Netlogon Service Strong Key Requirement",
-  "is_security_relevant": true,
-  "actual_value": "4,1"
+  "response": {
+    "normalized_concept": "Netlogon Service Require Strong Session Key Setting",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\RequireStrongKey",
+    "value": "4,1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:29:57.272914"
 }

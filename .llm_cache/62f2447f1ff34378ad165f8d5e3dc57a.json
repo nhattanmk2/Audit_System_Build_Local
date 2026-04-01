@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\UndockWithoutLogon",
+    "candidates": [
+      "2.3.7.6",
+      "2.3.7.3",
+      "2.3.7.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:06:25.244409"
+}

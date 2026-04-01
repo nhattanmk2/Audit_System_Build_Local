@@ -1,0 +1,14 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeUndockPrivilege",
+    "candidates": [
+      "19.7.44.1",
+      "18.10.81.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:33:14.635807"
+}

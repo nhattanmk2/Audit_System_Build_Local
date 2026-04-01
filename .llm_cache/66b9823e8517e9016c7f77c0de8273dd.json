@@ -1,1 +1,14 @@
-"17.9.1"
+{
+  "response": "17.9.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "IPsec Main Mode",
+    "candidates": [
+      "9.1.6",
+      "17.9.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:11:18.971383"
+}

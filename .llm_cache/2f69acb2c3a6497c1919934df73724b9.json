@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Local Security Authority Guest Account Restriction",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
+  "response": {
+    "normalized_concept": "Local Security Authority Guest Account Restriction",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\ForceGuest",
+    "value": "4,0",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:06:57.478066"
 }

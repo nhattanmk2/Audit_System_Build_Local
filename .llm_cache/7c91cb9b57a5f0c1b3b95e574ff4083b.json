@@ -1,0 +1,14 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Setup\\RecoveryConsole\\SetCommand",
+    "candidates": [
+      "18.9.3.1",
+      "18.10.18.7"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:23:27.359697"
+}

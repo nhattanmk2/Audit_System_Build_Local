@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "System Policy: SupportUwpStartupTasks – Enable support for Universal Windows Platform (UWP) apps to register startup tasks at logon",
-  "is_security_relevant": true,
-  "actual_value": "1"
-}

@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "SMB Service Null Session Access Restriction",
-  "is_security_relevant": true,
-  "actual_value": "4,1"
+  "response": {
+    "normalized_concept": "SMB Service Null Session Access Control",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\RestrictNullSessAccess",
+    "value": "4,1",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:08:01.957892"
 }

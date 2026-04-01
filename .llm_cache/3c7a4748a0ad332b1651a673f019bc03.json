@@ -1,1 +1,14 @@
-"17.1.1"
+{
+  "response": "17.1.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Credential Validation",
+    "candidates": [
+      "17.1.1",
+      "2.2.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:14:10.070194"
+}

@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Least Privilege for NTLM Client Security",
-  "is_security_relevant": true,
-  "actual_value": "4,536870912"
+  "response": {
+    "normalized_concept": "LSA NTLM Minimum Client Security Level (NTLMMinClientSec)",
+    "is_security_relevant": true,
+    "actual_value": "4,536870912"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0\\NTLMMinClientSec",
+    "value": "4,536870912",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:26:47.880185"
 }

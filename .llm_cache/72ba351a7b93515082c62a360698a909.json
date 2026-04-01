@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Version Section Handle Manipulation Behavior",
-  "is_security_relevant": false,
-  "actual_value": "Success and Failure"
+  "response": {
+    "normalized_concept": "System Handle Manipulation Setting",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Handle Manipulation",
+    "value": "Success and Failure",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:36:52.207509"
 }

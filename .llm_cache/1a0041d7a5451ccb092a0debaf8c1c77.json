@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Microsoft Defender Antivirus Rule Change Auditing",
-  "is_security_relevant": true,
-  "actual_value": "Success and Failure"
+  "response": {
+    "normalized_concept": "Microsoft Defender Antivirus Rule Change Auditing",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "MPSSVC Rule-Level Policy Change",
+    "value": "Success and Failure",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:13:06.886987"
 }

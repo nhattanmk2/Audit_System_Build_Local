@@ -1,0 +1,14 @@
+{
+  "response": "2.3.8.3",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters\\EnablePlainTextPassword",
+    "candidates": [
+      "2.3.8.3",
+      "18.10.82.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:29:09.860288"
+}

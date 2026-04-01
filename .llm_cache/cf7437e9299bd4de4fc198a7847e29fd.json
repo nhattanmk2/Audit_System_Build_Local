@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "NewAdministratorName",
+    "candidates": [
+      "2.3.17.1",
+      "18.10.15.2",
+      "2.2.22"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:30.539721"
+}

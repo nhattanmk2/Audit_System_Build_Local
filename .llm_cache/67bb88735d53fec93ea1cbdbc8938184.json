@@ -1,0 +1,14 @@
+{
+  "response": "2.3.11.5",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\NoLMHash",
+    "candidates": [
+      "2.3.11.5",
+      "18.10.18.3"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:27:12.093695"
+}

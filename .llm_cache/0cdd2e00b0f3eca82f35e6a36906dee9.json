@@ -1,0 +1,15 @@
+{
+  "response": "2.3.17.7",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\PromptOnSecureDesktop",
+    "candidates": [
+      "2.3.17.7",
+      "2.3.17.2",
+      "2.3.17.4"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:25:03.091980"
+}

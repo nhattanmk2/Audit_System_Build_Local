@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Server Service Require Security Signature",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
+  "response": {
+    "normalized_concept": "LanManServer (SMB) Require Security Signature (mandatory SMB signing)",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\RequireSecuritySignature",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:28:48.427139"
 }

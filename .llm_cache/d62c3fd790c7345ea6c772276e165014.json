@@ -1,1 +1,15 @@
-"17.4.1"
+{
+  "response": "17.4.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Directory Service Replication",
+    "candidates": [
+      "17.4.1",
+      "17.4.2",
+      "2.2.31"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:13:54.405163"
+}

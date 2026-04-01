@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Remote SAM Access Restriction Policy",
-  "is_security_relevant": true,
-  "actual_value": "1,\"O:BAG:BAD:(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1000)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1001)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1002)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1005)(A;;RC;;;BA)(A;;RC;;;S-1-5-32-555)\""
+  "response": {
+    "normalized_concept": "Local Security Authority (LSA) Remote SAM Access Control List (RestrictRemoteSAM DACL)",
+    "is_security_relevant": true,
+    "actual_value": "1,\"O:BAG:BAD:(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1000)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1001)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1002)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1005)(A;;RC;;;BA)(A;;RC;;;S-1-5-32-555)\""
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\RestrictRemoteSAM",
+    "value": "1,\"O:BAG:BAD:(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1000)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1001)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1002)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1005)(A;;RC;;;BA)(A;;RC;;;S-1-5-32-555)\"",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:27:32.340129"
 }

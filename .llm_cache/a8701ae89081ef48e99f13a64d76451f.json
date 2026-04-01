@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Local Security Authority No Lan Manager Hash Storage",
-  "is_security_relevant": true,
-  "actual_value": "4,1"
+  "response": {
+    "normalized_concept": "Local Security Authority (LSA) NoLMHash Setting – Disallow storage of LAN Manager (LM) password hashes",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\NoLMHash",
+    "value": "4,1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:27:07.542804"
 }

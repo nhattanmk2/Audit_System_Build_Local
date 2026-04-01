@@ -1,0 +1,14 @@
+{
+  "response": "17.8.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\FullPrivilegeAuditing",
+    "candidates": [
+      "17.8.1",
+      "2.2.39"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:26:38.130183"
+}

@@ -1,0 +1,14 @@
+{
+  "response": "2.3.7.6",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\CachedLogonsCount",
+    "candidates": [
+      "2.3.7.6",
+      "1.2.4"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:23:33.550701"
+}

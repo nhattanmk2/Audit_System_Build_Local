@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "System Access Default Administrator Account Name",
-  "is_security_relevant": true,
-  "actual_value": "Administrator"
+  "response": {
+    "normalized_concept": "Local Administrator Account Name",
+    "is_security_relevant": true,
+    "actual_value": "Administrator"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "NewAdministratorName",
+    "value": "\"Administrator\"",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:26.853687"
 }

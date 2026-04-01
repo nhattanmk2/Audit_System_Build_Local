@@ -1,1 +1,15 @@
-"2.3.13.1"
+{
+  "response": "2.3.13.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\ShutdownWithoutLogon",
+    "candidates": [
+      "2.3.7.3",
+      "2.3.13.1",
+      "2.3.7.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:25:29.142902"
+}

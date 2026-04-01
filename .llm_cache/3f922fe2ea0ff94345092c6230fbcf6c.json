@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Version Section Other Object Access Events Audit Level",
-  "is_security_relevant": true,
-  "actual_value": "Success and Failure"
+  "response": {
+    "normalized_concept": "Windows Audit Policy – Other Object Access Events (Success and Failure)",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Other Object Access Events",
+    "value": "Success and Failure",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:37:19.311429"
 }

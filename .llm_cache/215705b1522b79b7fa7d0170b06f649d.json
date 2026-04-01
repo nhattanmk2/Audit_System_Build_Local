@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Account Lockout Threshold",
-  "is_security_relevant": true,
-  "actual_value": "3"
+  "response": {
+    "normalized_concept": "Maximum Invalid Logon Attempts Before Account Lockout",
+    "is_security_relevant": true,
+    "actual_value": "3"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "LockoutBadCount",
+    "value": "3",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:13.953215"
 }

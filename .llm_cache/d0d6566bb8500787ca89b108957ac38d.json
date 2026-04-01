@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "NTLM Minimum Server Security",
-  "is_security_relevant": true,
-  "actual_value": "4,536870912"
+  "response": {
+    "normalized_concept": "Minimum NTLM Server Security Level (LSA) Registry Setting",
+    "is_security_relevant": true,
+    "actual_value": "4,536870912"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0\\NTLMMinServerSec",
+    "value": "4,536870912",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:26:59.409676"
 }

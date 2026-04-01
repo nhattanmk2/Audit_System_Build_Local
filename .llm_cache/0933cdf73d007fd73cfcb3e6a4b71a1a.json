@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Windows Audit Policy - Process Creation Auditing with Command Line",
-  "is_security_relevant": true,
-  "actual_value": "1"
+  "response": {
+    "normalized_concept": "Windows Audit Policy - Process Creation Auditing with Command Line",
+    "is_security_relevant": true,
+    "actual_value": "1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit",
+    "key": "ProcessCreationIncludeCmdLine_Enabled",
+    "value": "1",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:17:09.592108"
 }

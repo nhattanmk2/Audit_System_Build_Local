@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "EnableAdminAccount",
+    "candidates": [
+      "2.3.17.1",
+      "18.4.1",
+      "18.10.15.2"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:04:49.133749"
+}

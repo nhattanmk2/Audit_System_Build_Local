@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Version Section Non Sensitive Privilege Use Auditing",
-  "is_security_relevant": false,
-  "actual_value": "Success and Failure"
+  "response": {
+    "normalized_concept": "Audit Policy: Non‑Sensitive Privilege Use",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Non Sensitive Privilege Use",
+    "value": "Success and Failure",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:37:41.788691"
 }

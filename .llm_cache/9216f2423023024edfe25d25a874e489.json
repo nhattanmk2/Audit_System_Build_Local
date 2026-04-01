@@ -1,0 +1,14 @@
+{
+  "response": "17.9.4",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Security System Extension",
+    "candidates": [
+      "17.9.4",
+      "17.9.3"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:34:42.377101"
+}

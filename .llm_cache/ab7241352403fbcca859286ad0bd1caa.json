@@ -1,0 +1,15 @@
+{
+  "response": "2.2.32",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeDelegateSessionUserImpersonatePrivilege",
+    "candidates": [
+      "2.2.32",
+      "2.2.28",
+      "2.2.29"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:34:27.508070"
+}

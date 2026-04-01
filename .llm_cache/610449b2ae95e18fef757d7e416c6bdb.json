@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Privilege Rights Take Ownership of Files or Other Objects Privilege",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-32-544"
+  "response": {
+    "normalized_concept": "Take Ownership Privilege Assignment (SeTakeOwnershipPrivilege) for Administrators group",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-32-544"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeTakeOwnershipPrivilege",
+    "value": "*S-1-5-32-544",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:33:03.427867"
 }

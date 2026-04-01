@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\FIPSAlgorithmPolicy\\Enabled",
+    "candidates": [
+      "18.9.36.2",
+      "18.10.43.7.1",
+      "18.4.4"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:26:20.531494"
+}

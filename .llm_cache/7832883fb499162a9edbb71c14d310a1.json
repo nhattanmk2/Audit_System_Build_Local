@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Local Security Authority (LSA) Authentication Package Restrictions - Allow Remote Access Service (RAS) and Security Support Provider Interface (SSPI) to use MSV1_0",
-  "is_security_relevant": true,
-  "actual_value": "RASSFM"
-}

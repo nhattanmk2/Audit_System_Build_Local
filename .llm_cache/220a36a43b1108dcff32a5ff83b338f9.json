@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Remote Shutdown Privilege Assignment",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-32-544"
+  "response": {
+    "normalized_concept": "Remote Shutdown Privilege (SeRemoteShutdownPrivilege) assignment – granting the ability to shut down the system remotely, here assigned to the Administrators group (SID S-1-5-32-544)",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-32-544"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeRemoteShutdownPrivilege",
+    "value": "*S-1-5-32-544",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:31:01.626839"
 }

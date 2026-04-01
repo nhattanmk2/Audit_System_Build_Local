@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Disable caching of domain credentials in the Local Security Authority (LSA)",
-  "is_security_relevant": true,
-  "actual_value": "1"
-}

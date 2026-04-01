@@ -1,0 +1,15 @@
+{
+  "response": "1.1.2",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "MaximumPasswordAge",
+    "candidates": [
+      "1.1.2",
+      "1.1.3",
+      "2.3.6.5"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:08.703344"
+}

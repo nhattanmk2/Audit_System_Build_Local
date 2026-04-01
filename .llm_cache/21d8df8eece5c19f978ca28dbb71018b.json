@@ -1,1 +1,15 @@
-"17.5.5"
+{
+  "response": "17.5.5",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Other Logon/Logoff Events",
+    "candidates": [
+      "17.5.5",
+      "17.5.3",
+      "2.3.11.6"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:11:29.040861"
+}

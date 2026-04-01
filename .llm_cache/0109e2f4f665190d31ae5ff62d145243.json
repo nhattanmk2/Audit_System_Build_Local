@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Remote UAC token filtering for local accounts (LocalAccountTokenFilterPolicy)",
-  "is_security_relevant": true,
-  "actual_value": "1"
-}

@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Event Audit System Events Logging Level",
-  "is_security_relevant": true,
-  "actual_value": "3"
+  "response": {
+    "normalized_concept": "Event Audit – System Event Auditing (Success and Failure)",
+    "is_security_relevant": true,
+    "actual_value": "3"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Event Audit",
+    "key": "AuditSystemEvents",
+    "value": "3",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:22:10.394260"
 }

@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Windows Firewall Profile Enforcement - Public Profile Enabled",
-  "is_security_relevant": true,
-  "actual_value": "0"
+  "response": {
+    "normalized_concept": "Windows Firewall Profile Enforcement - Public Profile Enabled",
+    "is_security_relevant": true,
+    "actual_value": "0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Network Connections",
+    "key": "NC_PersonalFirewallConfig",
+    "value": "0",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:17:14.123061"
 }

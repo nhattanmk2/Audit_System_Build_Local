@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeChangeNotifyPrivilege",
+    "candidates": [
+      "17.8.1",
+      "18.10.81.2",
+      "19.7.44.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:45.456349"
+}

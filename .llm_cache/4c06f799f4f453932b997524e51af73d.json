@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Local Operating System Privilege - SeSystemtimePrivilege",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-19,*S-1-5-32-544"
-}

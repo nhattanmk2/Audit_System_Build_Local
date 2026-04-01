@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Event Audit Process Tracking Level",
-  "is_security_relevant": true,
-  "actual_value": "3"
+  "response": {
+    "normalized_concept": "Process Creation and Termination Auditing (Event Audit)",
+    "is_security_relevant": true,
+    "actual_value": "3"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Event Audit",
+    "key": "AuditProcessTracking",
+    "value": "3",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:22:55.914990"
 }

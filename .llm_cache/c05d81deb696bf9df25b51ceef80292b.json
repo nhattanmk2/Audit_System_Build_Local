@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Deny Remote Interactive Logon Right Privilege",
-  "is_security_relevant": true,
-  "actual_value": "ansibleadmin"
-}

@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Local Security Authority (LSA) Security Policy - Deny Remote Interactive Logon Right",
-  "is_security_relevant": true,
-  "actual_value": "ansibleadmin"
-}

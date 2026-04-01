@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "System Access Minimum Password Length",
-  "is_security_relevant": true,
-  "actual_value": "8"
+  "response": {
+    "normalized_concept": "System Access Minimum Password Length",
+    "is_security_relevant": true,
+    "actual_value": "8"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "MinimumPasswordLength",
+    "value": "8",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:09.284414"
 }

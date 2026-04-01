@@ -1,0 +1,15 @@
+{
+  "response": "2.3.9.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\AutoDisconnect",
+    "candidates": [
+      "2.3.9.1",
+      "2.3.9.4",
+      "18.4.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:28:26.886450"
+}

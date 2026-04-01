@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Version Section Application Generated Status",
-  "is_security_relevant": false,
-  "actual_value": "Success and Failure"
+  "response": {
+    "normalized_concept": "Application Generated Audit Policy (Success and Failure)",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Application Generated",
+    "value": "Success and Failure",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:36:49.196435"
 }

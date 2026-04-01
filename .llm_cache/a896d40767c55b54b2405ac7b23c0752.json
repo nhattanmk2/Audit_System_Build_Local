@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Winlogon Userinit Path",
-  "is_security_relevant": true,
-  "actual_value": "C:\\Windows\\system32\\userinit.exe,"
+  "response": {
+    "normalized_concept": "Winlogon Userinit Path",
+    "is_security_relevant": true,
+    "actual_value": "C:\\Windows\\system32\\userinit.exe,"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\currentVersion\\winlogon",
+    "key": "Userinit",
+    "value": "C:\\Windows\\system32\\userinit.exe,",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:15:21.281585"
 }

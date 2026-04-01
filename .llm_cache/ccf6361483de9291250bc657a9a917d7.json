@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeIncreaseWorkingSetPrivilege",
+    "candidates": [
+      "2.2.34",
+      "17.8.1",
+      "18.10.81.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:34:02.529366"
+}

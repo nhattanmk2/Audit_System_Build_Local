@@ -1,0 +1,15 @@
+{
+  "response": "17.8.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeBackupPrivilege",
+    "candidates": [
+      "17.8.1",
+      "18.9.25.1",
+      "18.10.81.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:36.681566"
+}

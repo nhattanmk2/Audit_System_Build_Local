@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Central Policy Staging",
+    "candidates": [
+      "18.9.19.3",
+      "18.9.19.5",
+      "18.9.19.2"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:12:21.997333"
+}

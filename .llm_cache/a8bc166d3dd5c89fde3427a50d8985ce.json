@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Windows Kernel Patch Protection (PatchGuard) Enabled",
-  "is_security_relevant": true,
-  "actual_value": "4,1"
-}

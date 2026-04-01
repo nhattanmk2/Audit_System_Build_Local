@@ -1,0 +1,15 @@
+{
+  "response": "2.2.46",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeRestorePrivilege",
+    "candidates": [
+      "2.2.46",
+      "18.10.81.2",
+      "19.7.44.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:32:52.262034"
+}

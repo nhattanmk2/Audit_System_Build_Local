@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Session Manager\\ProtectionMode",
+    "candidates": [
+      "18.4.5",
+      "18.9.24.1",
+      "18.10.43.4.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:07:44.248046"
+}

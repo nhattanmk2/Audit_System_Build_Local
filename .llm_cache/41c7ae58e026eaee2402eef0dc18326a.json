@@ -1,0 +1,15 @@
+{
+  "response": "2.2.3",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeNetworkLogonRight",
+    "candidates": [
+      "2.2.3",
+      "2.2.2",
+      "2.3.10.13"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:28.467327"
+}

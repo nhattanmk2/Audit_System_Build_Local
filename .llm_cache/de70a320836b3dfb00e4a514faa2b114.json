@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "System Access Account Lockout Reset Time",
-  "is_security_relevant": true,
-  "actual_value": "30"
+  "response": {
+    "normalized_concept": "Account Lockout Counter Reset Period (minutes)",
+    "is_security_relevant": true,
+    "actual_value": "30"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "ResetLockoutCount",
+    "value": "30",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:15.908192"
 }

@@ -1,0 +1,15 @@
+{
+  "response": "2.2.43",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeProfileSingleProcessPrivilege",
+    "candidates": [
+      "2.2.43",
+      "18.7.10",
+      "2.2.44"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:32:30.477536"
+}

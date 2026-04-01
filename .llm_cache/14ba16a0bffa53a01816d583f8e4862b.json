@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Windows Logon Banner Message",
-  "is_security_relevant": true,
-  "actual_value": "7,Yêu cầu người sử dụng MBV tuân thủ các quy định an toàn & bảo mật tài nguyên CNTT trong hệ thống mạng nội bộ"
+  "response": {
+    "normalized_concept": "Windows Logon Banner Message",
+    "is_security_relevant": true,
+    "actual_value": "7,Yêu cầu người sử dụng MBV tuân thủ các quy định an toàn & bảo mật tài nguyên CNTT trong hệ thống mạng nội bộ"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\LegalNoticeText",
+    "value": "7,Yêu cầu người sử dụng MBV tuân thủ các quy định an toàn & bảo mật tài nguyên CNTT trong hệ thống mạng nội bộ",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:06:14.332264"
 }

@@ -1,0 +1,15 @@
+{
+  "response": "17.9.3",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Security State Change",
+    "candidates": [
+      "17.9.3",
+      "17.7.3",
+      "17.7.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:35:04.989731"
+}

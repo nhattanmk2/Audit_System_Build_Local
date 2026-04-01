@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Privilege Rights: Restore Files and Directories Privilege",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-32-544,*S-1-5-32-551"
+  "response": {
+    "normalized_concept": "Restore Files and Directories Privilege Assignment (SeRestorePrivilege)",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-32-544,*S-1-5-32-551"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeRestorePrivilege",
+    "value": "*S-1-5-32-544,*S-1-5-32-551",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:32:47.964041"
 }

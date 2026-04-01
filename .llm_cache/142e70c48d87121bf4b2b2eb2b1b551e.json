@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Recovery Console Set Command Option",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
+  "response": {
+    "normalized_concept": "Windows Recovery Console SetCommand Enablement",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Setup\\RecoveryConsole\\SetCommand",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:23:21.185686"
 }

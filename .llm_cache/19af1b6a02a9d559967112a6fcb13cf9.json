@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "System Access Maximum Password Age",
-  "is_security_relevant": true,
-  "actual_value": "90"
+  "response": {
+    "normalized_concept": "System Access Maximum Password Age (days)",
+    "is_security_relevant": true,
+    "actual_value": "90"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "MaximumPasswordAge",
+    "value": "90",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:07.401706"
 }

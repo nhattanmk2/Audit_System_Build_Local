@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Local Security Policy Privilege Rights: Replace a process level token",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-19,*S-1-5-20"
+  "response": {
+    "normalized_concept": "User Right – Replace a Process Level Token (SeAssignPrimaryTokenPrivilege) assignment",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-19,*S-1-5-20"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeAssignPrimaryTokenPrivilege",
+    "value": "*S-1-5-19,*S-1-5-20",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:32:40.905412"
 }

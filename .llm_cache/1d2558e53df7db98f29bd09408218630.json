@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Version Section Security State Change Notification",
-  "is_security_relevant": false,
-  "actual_value": "Success and Failure"
+  "response": {
+    "normalized_concept": "Audit Security State Change (Success and Failure)",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Security State Change",
+    "value": "Success and Failure",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:35:01.542181"
 }

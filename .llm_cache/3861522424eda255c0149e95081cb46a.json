@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Local Security Authority Subsystem Crash on Audit Failure",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
+  "response": {
+    "normalized_concept": "Local Security Authority (LSA) Crash on Audit Failure Setting",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\CrashOnAuditFail",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:25:53.652140"
 }

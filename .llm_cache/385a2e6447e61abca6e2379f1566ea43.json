@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "System Access Built-in Administrator Account Status",
-  "is_security_relevant": true,
-  "actual_value": "1"
+  "response": {
+    "normalized_concept": "Built-in Administrator Account Enabled",
+    "is_security_relevant": true,
+    "actual_value": "1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "EnableAdminAccount",
+    "value": "1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:55.578012"
 }

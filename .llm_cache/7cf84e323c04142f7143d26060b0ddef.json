@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "Windows Logon Shell Infrastructure Executable Path",
-  "is_security_relevant": true,
-  "actual_value": "sihost.exe"
-}

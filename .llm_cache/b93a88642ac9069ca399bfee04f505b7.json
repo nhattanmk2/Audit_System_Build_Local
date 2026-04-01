@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "System Policy: Allow Undocking Without Logon (bypass lock screen on undocking)",
-  "is_security_relevant": true,
-  "actual_value": "1"
-}

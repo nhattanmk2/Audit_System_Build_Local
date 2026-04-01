@@ -1,5 +1,0 @@
-{
-  "normalized_concept": "SMB Server Forced Logoff Enforcement (EnableForcedLogoff)",
-  "is_security_relevant": true,
-  "actual_value": "1"
-}

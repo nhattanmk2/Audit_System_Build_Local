@@ -1,0 +1,15 @@
+{
+  "response": "2.3.11.6",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "ForceLogoffWhenHourExpire",
+    "candidates": [
+      "2.3.11.6",
+      "2.3.9.4",
+      "18.9.25.7"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:24.081104"
+}

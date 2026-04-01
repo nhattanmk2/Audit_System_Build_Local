@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "File System",
+    "candidates": [
+      "17.6.2",
+      "17.6.1",
+      "2.2.11"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:11:49.562370"
+}

@@ -1,1 +1,14 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Filtering Platform Policy Change",
+    "candidates": [
+      "17.7.4",
+      "2.3.2.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:13:13.650202"
+}

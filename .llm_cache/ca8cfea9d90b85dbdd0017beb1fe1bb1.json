@@ -1,0 +1,15 @@
+{
+  "response": "2.2.6",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeIncreaseQuotaPrivilege",
+    "candidates": [
+      "2.2.6",
+      "2.2.34",
+      "17.8.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:31:21.122765"
+}

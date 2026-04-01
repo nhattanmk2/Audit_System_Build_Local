@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Windows Logon Password Expiration Warning Threshold",
-  "is_security_relevant": true,
-  "actual_value": "4,10"
+  "response": {
+    "normalized_concept": "Winlogon Password Expiration Warning Period",
+    "is_security_relevant": true,
+    "actual_value": "4,10"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\PasswordExpiryWarning",
+    "value": "4,10",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:23:46.707065"
 }

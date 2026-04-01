@@ -135,16 +135,26 @@ def get_cached_response(cache_key: str) -> Optional[Any]:
     if cache_path.exists():
         try:
             with open(cache_path, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+                # Handle both old format (direct) and new format (wrapped)
+                if isinstance(data, dict) and "response" in data:
+                    return data["response"]
+                return data
         except Exception:
             return None
     return None
 
-def save_cached_response(cache_key: str, data: Any):
+def save_cached_response(cache_key: str, data: Any, metadata: dict = None):
     cache_path = get_cache_path(cache_key)
     try:
+        # Tích hợp thêm metadata vào cache để sau này lọc/so sánh
+        cache_entry = {
+            "response": data,
+            "metadata": metadata or {},
+            "timestamp": datetime.now().isoformat()
+        }
         with open(cache_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+            json.dump(cache_entry, f, ensure_ascii=False, indent=2)
     except Exception as e:
         print(f"Error saving cache: {e}")
 
@@ -298,7 +308,13 @@ Value: {value}
         if "normalized_concept" not in data or "actual_value" not in data:
             raise ValueError("Missing required fields")
 
-        save_cached_response(cache_key, data)
+        save_cached_response(cache_key, data, metadata={
+            "type": "normalization",
+            "section": config_doc.metadata.get("section"),
+            "key": config_doc.metadata.get("key"),
+            "value": config_doc.metadata.get("value"),
+            "model": model_name
+        })
         return data
 
     except Exception as e:
@@ -423,12 +439,21 @@ HÃY CHỌN RULE ID KHỚP NHẤT:
 
     # Kiểm tra xem kết quả có nằm trong danh sách ID không
     valid_ids = [c["rule_id"] for c in candidates]
+    
+    meta = {
+        "type": "rule_selection",
+        "section": section_name,
+        "key": key_name,
+        "candidates": candidate_ids,
+        "model": model_name
+    }
+
     if result in valid_ids:
-        save_cached_response(cache_key, result)
+        save_cached_response(cache_key, result, metadata=meta)
         return result
     
     if result == "NONE":
-        save_cached_response(cache_key, "NONE")
+        save_cached_response(cache_key, "NONE", metadata=meta)
         return "NONE"
     
     return None

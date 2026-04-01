@@ -1,0 +1,14 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Registry",
+    "candidates": [
+      "18.9.19.2",
+      "18.9.19.3"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:36:29.928974"
+}

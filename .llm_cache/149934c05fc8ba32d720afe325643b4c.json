@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Local Security Authority FIPS Algorithm Policy Enablement",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
+  "response": {
+    "normalized_concept": "FIPS 140-2 Cryptographic Algorithm Enforcement (Lsa\\FIPSAlgorithmPolicy\\Enabled)",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\FIPSAlgorithmPolicy\\Enabled",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:26:17.809108"
 }

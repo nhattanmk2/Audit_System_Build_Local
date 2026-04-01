@@ -1,1 +1,15 @@
-"17.5.1"
+{
+  "response": "17.5.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Account Lockout",
+    "candidates": [
+      "17.5.1",
+      "17.2.6",
+      "1.2.2"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:11:15.691551"
+}

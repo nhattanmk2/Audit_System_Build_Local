@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Access Control - Network Logon Right",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551"
+  "response": {
+    "normalized_concept": "Network Logon Right (SeNetworkLogonRight) – accounts permitted to log on to the computer over the network",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeNetworkLogonRight",
+    "value": "*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:23.742286"
 }

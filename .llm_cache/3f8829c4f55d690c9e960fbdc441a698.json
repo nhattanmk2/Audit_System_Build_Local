@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Version Section Signature",
-  "is_security_relevant": false,
-  "actual_value": "$CHICAGO$"
+  "response": {
+    "normalized_concept": "Version Signature",
+    "is_security_relevant": false,
+    "actual_value": "$CHICAGO$"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "signature",
+    "value": "\"$CHICAGO$\"",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:34:31.459332"
 }

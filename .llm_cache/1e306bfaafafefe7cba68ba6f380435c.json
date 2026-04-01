@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters\\RequireSecuritySignature",
+    "candidates": [
+      "2.3.5.4",
+      "2.3.11.9",
+      "2.3.11.7"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:29:21.846785"
+}

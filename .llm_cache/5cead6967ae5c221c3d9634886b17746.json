@@ -1,0 +1,15 @@
+{
+  "response": "17.5.6",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Special Logon",
+    "candidates": [
+      "17.5.6",
+      "17.5.4",
+      "17.5.5"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:35:47.022540"
+}

@@ -1,0 +1,15 @@
+{
+  "response": "18.10.29.4",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Process Termination",
+    "candidates": [
+      "18.9.3.1",
+      "18.10.29.4",
+      "17.3.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:38:12.516456"
+}

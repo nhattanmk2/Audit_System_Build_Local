@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "System Access Password History Size",
-  "is_security_relevant": true,
-  "actual_value": "4"
+  "response": {
+    "normalized_concept": "System Access Password History Size (number of previous passwords remembered to prevent reuse)",
+    "is_security_relevant": true,
+    "actual_value": "4"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "PasswordHistorySize",
+    "value": "4",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:12.551126"
 }

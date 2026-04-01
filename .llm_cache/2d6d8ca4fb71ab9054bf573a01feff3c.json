@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Create a page file privilege for the Administrators group",
-  "is_security_relevant": true,
-  "actual_value": "*S-1-5-32-544"
+  "response": {
+    "normalized_concept": "Windows \"Create pagefile\" user right (SeCreatePagefilePrivilege)",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-32-544"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeCreatePagefilePrivilege",
+    "value": "*S-1-5-32-544",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:50.491704"
 }

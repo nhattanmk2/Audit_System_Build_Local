@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Windows Logon Force Unlock Logon",
-  "is_security_relevant": true,
-  "actual_value": "4,0"
+  "response": {
+    "normalized_concept": "Winlogon ForceUnlockLogon – Require workstation to lock immediately after user logon",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\ForceUnlockLogon",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:23:37.727197"
 }

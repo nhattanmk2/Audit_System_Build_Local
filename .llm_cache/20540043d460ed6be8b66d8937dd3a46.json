@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "2.3.6.2",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\SealSecureChannel",
+    "candidates": [
+      "2.3.5.2",
+      "2.3.6.2",
+      "2.3.6.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:30:09.895576"
+}

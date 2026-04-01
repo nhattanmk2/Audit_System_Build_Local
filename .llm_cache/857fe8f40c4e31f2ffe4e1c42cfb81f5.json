@@ -1,0 +1,14 @@
+{
+  "response": "17.8.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Sensitive Privilege Use",
+    "candidates": [
+      "17.8.1",
+      "17.2.6"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:37:58.235088"
+}

@@ -1,1 +1,15 @@
-"2.3.7.2"
+{
+  "response": "2.3.7.2",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\DontDisplayLastUserName",
+    "candidates": [
+      "2.3.7.2",
+      "18.10.82.2",
+      "18.9.28.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:05:56.910840"
+}

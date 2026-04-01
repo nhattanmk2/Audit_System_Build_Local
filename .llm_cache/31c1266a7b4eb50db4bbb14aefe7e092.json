@@ -1,5 +1,15 @@
 {
-  "normalized_concept": "Registry Key Encoding",
-  "is_security_relevant": false,
-  "actual_value": "yes"
+  "response": {
+    "normalized_concept": "Registry Key Encoding",
+    "is_security_relevant": false,
+    "actual_value": "yes"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Unicode",
+    "key": "Unicode",
+    "value": "yes",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-01T17:03:42.138982"
 }

@@ -1,1 +1,15 @@
-"NONE"
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeImpersonatePrivilege",
+    "candidates": [
+      "2.2.32",
+      "2.2.33",
+      "17.8.1"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:33:48.012197"
+}

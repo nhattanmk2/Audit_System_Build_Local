@@ -1,0 +1,15 @@
+{
+  "response": "1.1.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "PasswordHistorySize",
+    "candidates": [
+      "18.9.25.5",
+      "1.1.1",
+      "18.9.25.4"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:13.446947"
+}

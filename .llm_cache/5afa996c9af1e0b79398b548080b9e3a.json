@@ -1,1 +1,15 @@
-"2.3.11.9"
+{
+  "response": "2.3.11.9",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LDAP\\LDAPClientIntegrity",
+    "candidates": [
+      "2.3.11.9",
+      "2.3.11.8",
+      "2.3.8.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:29:30.379540"
+}

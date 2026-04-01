@@ -1,1 +1,15 @@
-"1.1.4"
+{
+  "response": "1.1.4",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "MinimumPasswordLength",
+    "candidates": [
+      "1.1.4",
+      "1.1.6",
+      "18.9.25.5"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:21:10.043781"
+}

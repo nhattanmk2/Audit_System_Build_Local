@@ -1,0 +1,15 @@
+{
+  "response": "2.2.41",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeSystemEnvironmentPrivilege",
+    "candidates": [
+      "2.2.41",
+      "19.7.44.1",
+      "18.10.81.2"
+    ],
+    "model": "default"
+  },
+  "timestamp": "2026-04-01T16:32:21.548939"
+}
