@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "LanManServer Service DLL Path",
+  "is_security_relevant": true,
+  "actual_value": "C:\\Windows\\system32\\srvsvc.dll"
+}

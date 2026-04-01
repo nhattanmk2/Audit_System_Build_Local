@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Kerberos Authentication Service Logging",
+  "is_security_relevant": true,
+  "actual_value": "Success and Failure"
+}

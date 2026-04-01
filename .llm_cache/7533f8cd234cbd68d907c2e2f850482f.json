@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "SMB Server Service DLL Unload on Stop Behavior",
+  "is_security_relevant": false,
+  "actual_value": "1"
+}

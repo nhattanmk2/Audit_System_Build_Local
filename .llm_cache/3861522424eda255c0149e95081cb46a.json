@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Local Security Authority Subsystem Crash on Audit Failure",
+  "is_security_relevant": true,
+  "actual_value": "4,0"
+}

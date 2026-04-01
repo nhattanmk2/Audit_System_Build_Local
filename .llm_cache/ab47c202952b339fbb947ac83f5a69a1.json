@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows Logon Shell Infrastructure Executable",
+  "is_security_relevant": true,
+  "actual_value": "sihost.exe"
+}

@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Access Control - Network Logon Right",
+  "is_security_relevant": true,
+  "actual_value": "*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551"
+}

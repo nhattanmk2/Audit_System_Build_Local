@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "LSA MSV1_0 Minimum NTLM Server Security Level (enforces NTLMv2 or higher)",
+  "is_security_relevant": true,
+  "actual_value": "536870912"
+}

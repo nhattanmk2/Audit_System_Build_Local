@@ -15,6 +15,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.documents import Document
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.pagesizes import A4
@@ -37,7 +38,7 @@ CACHE_DIR = Path("./.llm_cache")
 CACHE_DIR.mkdir(exist_ok=True)
 
 # ===================== LLM CONFIG =====================
-DEFAULT_MODEL = "gemma-3-27b-it" 
+DEFAULT_MODEL = "llama-3.3-70b-versatile" 
 
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en-v1.5"
 
@@ -70,8 +71,28 @@ def get_embedding_model():
     return HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
 
 # @st.cache_resource
-def get_llm(model_name):
+def get_llm(model_selection):
+    """
+    model_selection is in the format 'provider:model_id' or just 'model_id' (fallback)
+    """
+    if ":" in model_selection:
+        provider, model_name = model_selection.split(":", 1)
+    else:
+        # Fallback detection for older formats or direct strings
+        groq_models = ["llama", "mixtral", "qwen", "gemma2"]
+        if any(m in model_selection.lower() for m in groq_models):
+            provider, model_name = "groq", model_selection
+        else:
+            provider, model_name = "gemini", model_selection
     
+    if provider == "groq":
+        return ChatGroq(
+            model_name=model_name,
+            groq_api_key=os.getenv("GROQ_API_KEY"),
+            temperature=0,
+        )
+    
+    # Default to Gemini
     return ChatGoogleGenerativeAI(
         model=model_name,
         google_api_key=os.getenv("GEMINI_API_KEY"),
@@ -87,7 +108,10 @@ def invoke_chain_with_retry(chain, params, max_retries=6, base_delay=10):
             return chain.invoke(params)
         except Exception as e:
             err_msg = str(e)
-            if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg or "Quota" in err_msg:
+            # Handle both Gemini and Groq quota/rate limit errors
+            quota_error = any(kw in err_msg or kw in err_msg.lower() for kw in ["429", "RESOURCE_EXHAUSTED", "Quota", "rate_limit_exceeded"])
+            
+            if quota_error:
                 # Phân biệt giới hạn phút và giới hạn ngày
                 if "daily" in err_msg.lower() or "limit: 20" in err_msg:
                     st.error("❌ Hết quota hàng ngày (Daily Quota Exceeded). Vui lòng thử lại sau hoặc đổi model/API key.")
@@ -96,7 +120,7 @@ def invoke_chain_with_retry(chain, params, max_retries=6, base_delay=10):
                 if attempt == max_retries - 1:
                     raise
                 wait_time = base_delay * (attempt + 1)
-                st.warning(f"⚠️ Hit Rate Limit. Thử lại sau {wait_time}s... (Lần {attempt+1}/{max_retries})")
+                st.warning(f"⚠️ Hit Rate Limit ({'Groq' if 'groq' in err_msg.lower() else 'Gemini'}). Thử lại sau {wait_time}s... (Lần {attempt+1}/{max_retries})")
                 time.sleep(wait_time)
             else:
                 raise
@@ -639,19 +663,51 @@ with st.sidebar:
     st.header("⚙️ Model Selection")
     
     # Get available models from models.txt if it exists
-    available_models = []
+    all_models_raw = []
     if os.path.exists("models.txt"):
         with open("models.txt", "r") as f:
-            available_models = [line.strip() for line in f if line.strip() and not line.startswith("ERROR")]
+            all_models_raw = [line.strip() for line in f if line.strip()]
     
-    if not available_models:
-        available_models = [DEFAULT_MODEL, "gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
+    if not all_models_raw:
+        all_models_raw = [
+            f"groq:{DEFAULT_MODEL}",
+            "groq:llama-3.1-8b-instant",
+            "gemini:gemini-2.0-flash", 
+            "gemini:gemini-1.5-flash", 
+            "gemini:gemini-1.5-pro"
+        ]
+
+    # Organize models by provider for the UI
+    provider_map = {"Groq": [], "Gemini": []}
+    for m in all_models_raw:
+        if m.startswith("groq:"):
+            provider_map["Groq"].append(m)
+        elif m.startswith("gemini:"):
+            provider_map["Gemini"].append(m)
+        else:
+            # Automatic assignment if prefix missing
+            if any(p in m.lower() for p in ["llama", "mixtral", "qwen", "gemma2"]):
+                provider_map["Groq"].append(f"groq:{m}")
+            else:
+                provider_map["Gemini"].append(f"gemini:{m}")
+
+    display_options = []
+    for provider, models in provider_map.items():
+        if models:
+            display_options.extend(models)
 
     model_name = st.selectbox(
         "Lựa chọn Model", 
-        options=available_models,
-        index=available_models.index(DEFAULT_MODEL) if DEFAULT_MODEL in available_models else 0
+        options=display_options,
+        format_func=lambda x: f"[{x.split(':', 1)[0].upper()}] {x.split(':', 1)[1]}" if ":" in x else x,
+        index=0
     )
+
+    if st.button("🔄 Refresh Model List"):
+        with st.spinner("Đang cập nhật danh sách model..."):
+            os.system(f"{os.sys.executable} fetch_all_models.py")
+            st.success("Đã cập nhật danh sách model!")
+            st.rerun()
 
     st.divider()
     profile_ms = st.checkbox("Hệ thống là Member Server (MS)?", value=True)

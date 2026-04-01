@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows Logon Smart Card Service Host Criticality",
+  "is_security_relevant": true,
+  "actual_value": "0"
+}

@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Local Security Authority (LSA) MSV1_0 Authentication Package - IIS Sub Authority",
+  "is_security_relevant": true,
+  "actual_value": "IISSUBA"
+}

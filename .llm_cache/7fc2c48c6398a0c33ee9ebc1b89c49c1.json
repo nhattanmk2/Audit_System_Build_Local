@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Local Security Authority (LSA) SeIncreaseBasePriorityPrivilege Assignment",
+  "is_security_relevant": true,
+  "actual_value": "*S-1-5-32-544,*S-1-5-80-1022103852-557323231-2631956743-2617558662-443950531,*S-1-5-80-1238030286-1947770792-1922528618-3141380425-2114502465,*S-1-5-80-3257343428-453465116-2313736834-3771521499-986305465,*S-1-5-90-0"
+}

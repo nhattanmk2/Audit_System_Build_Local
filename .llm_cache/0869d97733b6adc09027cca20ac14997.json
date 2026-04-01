@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows Logon Critical Shell",
+  "is_security_relevant": true,
+  "actual_value": "0"
+}

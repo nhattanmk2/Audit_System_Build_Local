@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows System Policy Delayed Desktop Switch Timeout",
+  "is_security_relevant": true,
+  "actual_value": "0"
+}

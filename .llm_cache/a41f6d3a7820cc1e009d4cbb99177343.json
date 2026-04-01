@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows Kernel Object Case Insensitivity",
+  "is_security_relevant": true,
+  "actual_value": "1"
+}

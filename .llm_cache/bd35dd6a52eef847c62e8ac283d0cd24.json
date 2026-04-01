@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Force use of Secure Channel for interactive logons (SCForceOption)",
+  "is_security_relevant": true,
+  "actual_value": "0"
+}

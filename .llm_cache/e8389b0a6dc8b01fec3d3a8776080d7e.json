@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Local Security Authority (LSA) Authentication Packages (e.g., NTLM)",
+  "is_security_relevant": true,
+  "actual_value": "msv1_0"
+}

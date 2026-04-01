@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Remote Desktop Service WinStation Disabled State",
+  "is_security_relevant": true,
+  "actual_value": "0"
+}

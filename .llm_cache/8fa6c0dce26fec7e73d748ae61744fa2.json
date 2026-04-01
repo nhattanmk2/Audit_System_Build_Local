@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows Logon Secure Removal of Cached Credentials Option",
+  "is_security_relevant": true,
+  "actual_value": "1,\"0\""
+}

@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Enable Full-Trust Startup Tasks for Windows Store (UWP) Applications (System Policies – SupportFullTrustStartupTasks)",
+  "is_security_relevant": true,
+  "actual_value": "1"
+}

@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "NTLM Authentication Minimum Client Security Strength (Negotiate NTLMv1)",
+  "is_security_relevant": true,
+  "actual_value": "4,536870912"
+}

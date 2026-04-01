@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows System Policy to Disable Crash Dump Automatic File Collection",
+  "is_security_relevant": true,
+  "actual_value": "4,0"
+}

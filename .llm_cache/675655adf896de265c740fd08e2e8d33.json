@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows Operating System Product Type (LSA ProductType registry value)",
+  "is_security_relevant": false,
+  "actual_value": "8"
+}

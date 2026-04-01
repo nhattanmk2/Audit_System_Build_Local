@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Enable inclusion of command line arguments in process creation audit events (Windows Audit Policy)",
+  "is_security_relevant": true,
+  "actual_value": "1"
+}

@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows PowerShell Desired State Configuration (DSC) Automation Host Enabled",
+  "is_security_relevant": true,
+  "actual_value": "2"
+}

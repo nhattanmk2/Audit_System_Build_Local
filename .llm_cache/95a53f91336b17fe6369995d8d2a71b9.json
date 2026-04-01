@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "SecurePipe Servers Allowed Paths - Machine",
+  "is_security_relevant": true,
+  "actual_value": "7,System\\CurrentControlSet\\Control\\ProductOptions,System\\CurrentControlSet\\Control\\Server Applications,Software\\Microsoft\\Windows NT\\CurrentVersion"
+}

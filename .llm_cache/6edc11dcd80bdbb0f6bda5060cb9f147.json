@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Enforce validation of code signatures for administrative tools",
+  "is_security_relevant": true,
+  "actual_value": "0"
+}

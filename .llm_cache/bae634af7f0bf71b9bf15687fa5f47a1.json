@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Enable Secure UI Automation Paths (prevents UI spoofing by restricting UI Automation access across integrity levels)",
+  "is_security_relevant": true,
+  "actual_value": "1"
+}

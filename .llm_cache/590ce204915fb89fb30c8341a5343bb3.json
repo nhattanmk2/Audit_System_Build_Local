@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Windows Logon PreCreate Known Folders Registry Setting",
+  "is_security_relevant": false,
+  "actual_value": "{A520A1A4-1780-4FF6-BD18-167343C5AF16}"
+}

@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Netlogon Service DLL Path",
+  "is_security_relevant": true,
+  "actual_value": "C:\\Windows\\system32\\netlogon.dll"
+}
