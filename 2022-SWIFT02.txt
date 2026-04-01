@@ -1,0 +1,382 @@
+2022-SWIFT02
+
+----------OS Patch----------
+
+Description     HotFixID  InstalledOn           
+-----------     --------  -----------           
+Update          KB5022507 3/10/2023 12:00:00 AM 
+Security Update KB5048654 12/26/2024 12:00:00 AM
+Security Update KB5044414 12/26/2024 12:00:00 AM
+
+
+
+----------SecEdit----------
+[Unicode]
+Unicode=yes
+[System Access]
+MinimumPasswordAge = 0
+MaximumPasswordAge = 90
+MinimumPasswordLength = 8
+PasswordComplexity = 1
+PasswordHistorySize = 4
+LockoutBadCount = 3
+ResetLockoutCount = 30
+LockoutDuration = 30
+AllowAdministratorLockout = 0
+RequireLogonToChangePassword = 0
+ForceLogoffWhenHourExpire = 0
+NewAdministratorName = "Administrator"
+NewGuestName = "Guest"
+ClearTextPassword = 0
+LSAAnonymousNameLookup = 0
+EnableAdminAccount = 1
+EnableGuestAccount = 0
+[Event Audit]
+AuditSystemEvents = 3
+AuditLogonEvents = 3
+AuditObjectAccess = 3
+AuditPrivilegeUse = 3
+AuditPolicyChange = 3
+AuditAccountManage = 3
+AuditProcessTracking = 3
+AuditDSAccess = 3
+AuditAccountLogon = 3
+[Registry Values]
+MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Setup\RecoveryConsole\SecurityLevel=4,0
+MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Setup\RecoveryConsole\SetCommand=4,0
+MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\CachedLogonsCount=1,"10"
+MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\ForceUnlockLogon=4,0
+MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\PasswordExpiryWarning=4,10
+MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\ScRemoveOption=1,"0"
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ConsentPromptBehaviorAdmin=4,0
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ConsentPromptBehaviorUser=4,3
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableCAD=4,0
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\DontDisplayLastUserName=4,0
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\EnableInstallerDetection=4,1
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA=4,1
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\EnableSecureUIAPaths=4,1
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\EnableUIADesktopToggle=4,0
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\EnableVirtualization=4,1
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\LegalNoticeCaption=1,"CHÍNH SÁCH BẢO MẬT MBV"
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\LegalNoticeText=7,Yêu cầu người sử dụng MBV tuân thủ các quy định an toàn & bảo mật tài nguyên CNTT trong hệ thống mạng nội bộ
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\PromptOnSecureDesktop=4,0
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ScForceOption=4,0
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ShutdownWithoutLogon=4,0
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\UndockWithoutLogon=4,1
+MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ValidateAdminCodeSignatures=4,0
+MACHINE\Software\Policies\Microsoft\Windows\Safer\CodeIdentifiers\AuthenticodeEnabled=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\AuditBaseObjects=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\CrashOnAuditFail=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\DisableDomainCreds=4,1
+MACHINE\System\CurrentControlSet\Control\Lsa\EveryoneIncludesAnonymous=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\FIPSAlgorithmPolicy\Enabled=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\ForceGuest=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\FullPrivilegeAuditing=3,0
+MACHINE\System\CurrentControlSet\Control\Lsa\LimitBlankPasswordUse=4,1
+MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0\NTLMMinClientSec=4,536870912
+MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0\NTLMMinServerSec=4,536870912
+MACHINE\System\CurrentControlSet\Control\Lsa\NoLMHash=4,1
+MACHINE\System\CurrentControlSet\Control\Lsa\RestrictAnonymous=4,0
+MACHINE\System\CurrentControlSet\Control\Lsa\RestrictAnonymousSAM=4,1
+MACHINE\System\CurrentControlSet\Control\Lsa\RestrictRemoteSAM=1,"O:BAG:BAD:(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1000)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1001)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1002)(A;;RC;;;S-1-5-21-2223777671-3441947113-3617976731-1005)(A;;RC;;;BA)(A;;RC;;;S-1-5-32-555)"
+MACHINE\System\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers\AddPrinterDrivers=4,1
+MACHINE\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedExactPaths\Machine=7,System\CurrentControlSet\Control\ProductOptions,System\CurrentControlSet\Control\Server Applications,Software\Microsoft\Windows NT\CurrentVersion
+MACHINE\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedPaths\Machine=7,System\CurrentControlSet\Control\Print\Printers,System\CurrentControlSet\Services\Eventlog,Software\Microsoft\OLAP Server,Software\Microsoft\Windows NT\CurrentVersion\Print,Software\Microsoft\Windows NT\CurrentVersion\Windows,System\CurrentControlSet\Control\ContentIndex,System\CurrentControlSet\Control\Terminal Server,System\CurrentControlSet\Control\Terminal Server\UserConfig,System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration,Software\Microsoft\Windows NT\CurrentVersion\Perflib,System\CurrentControlSet\Services\SysmonLog
+MACHINE\System\CurrentControlSet\Control\Session Manager\Kernel\ObCaseInsensitive=4,1
+MACHINE\System\CurrentControlSet\Control\Session Manager\Memory Management\ClearPageFileAtShutdown=4,0
+MACHINE\System\CurrentControlSet\Control\Session Manager\ProtectionMode=4,1
+MACHINE\System\CurrentControlSet\Control\Session Manager\SubSystems\optional=7,
+MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\AutoDisconnect=4,15
+MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\EnableForcedLogOff=4,1
+MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\EnableSecuritySignature=4,0
+MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\NullSessionPipes=7,
+MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\RequireSecuritySignature=4,0
+MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters\RestrictNullSessAccess=4,1
+MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Parameters\EnablePlainTextPassword=4,0
+MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Parameters\EnableSecuritySignature=4,1
+MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Parameters\RequireSecuritySignature=4,0
+MACHINE\System\CurrentControlSet\Services\LDAP\LDAPClientIntegrity=4,1
+MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\DisablePasswordChange=4,0
+MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\MaximumPasswordAge=4,30
+MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\RequireSignOrSeal=4,1
+MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\RequireStrongKey=4,1
+MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\SealSecureChannel=4,1
+MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\SignSecureChannel=4,1
+[Privilege Rights]
+SeNetworkLogonRight = *S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551
+SeBackupPrivilege = *S-1-5-32-544,*S-1-5-32-551,*S-1-5-80-1228066275-3868353910-135050277-2495973948-3837616689,*S-1-5-80-2242033103-159246330-2344537424-904375311-4048713941,*S-1-5-80-3673865075-4269381881-1487181137-4132761916-3761872238
+SeChangeNotifyPrivilege = *S-1-1-0,*S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551
+SeSystemtimePrivilege = *S-1-5-19,*S-1-5-32-544
+SeCreatePagefilePrivilege = *S-1-5-32-544
+SeDebugPrivilege = *S-1-5-32-544
+SeRemoteShutdownPrivilege = *S-1-5-32-544
+SeAuditPrivilege = *S-1-5-19,*S-1-5-20
+SeIncreaseQuotaPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544
+SeIncreaseBasePriorityPrivilege = *S-1-5-32-544,*S-1-5-80-1022103852-557323231-2631956743-2617558662-443950531,*S-1-5-80-1238030286-1947770792-1922528618-3141380425-2114502465,*S-1-5-80-3257343428-453465116-2313736834-3771521499-986305465,*S-1-5-90-0
+SeLoadDriverPrivilege = *S-1-5-32-544
+SeBatchLogonRight = *S-1-5-32-544,*S-1-5-32-551,*S-1-5-32-559,*S-1-5-80-131460012-462607677-1129975998-1416801700-3681646093,*S-1-5-80-2455269281-2106202269-2298118055-859575803-3245845978,*S-1-5-80-3504330023-1224365967-829212767-1400205943-1150158830,*S-1-5-80-4231343625-949802588-2514444441-3478146280-2360567394
+SeServiceLogonRight = *S-1-5-18,swiftadmin,swiftuser,*S-1-5-80-0,*S-1-5-80-1022103852-557323231-2631956743-2617558662-443950531,*S-1-5-80-1228066275-3868353910-135050277-2495973948-3837616689,*S-1-5-80-1238030286-1947770792-1922528618-3141380425-2114502465,*S-1-5-80-131460012-462607677-1129975998-1416801700-3681646093,*S-1-5-80-2242033103-159246330-2344537424-904375311-4048713941,*S-1-5-80-2455269281-2106202269-2298118055-859575803-3245845978,*S-1-5-80-3257343428-453465116-2313736834-3771521499-986305465,*S-1-5-80-3504330023-1224365967-829212767-1400205943-1150158830,*S-1-5-80-3673865075-4269381881-1487181137-4132761916-3761872238,*S-1-5-80-4231343625-949802588-2514444441-3478146280-2360567394
+SeInteractiveLogonRight = *S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551
+SeSecurityPrivilege = *S-1-5-32-544
+SeSystemEnvironmentPrivilege = *S-1-5-32-544
+SeProfileSingleProcessPrivilege = *S-1-5-32-544
+SeSystemProfilePrivilege = *S-1-5-32-544,*S-1-5-80-3139157870-2983391045-3678747466-658725712-1809340420
+SeAssignPrimaryTokenPrivilege = *S-1-5-19,*S-1-5-20
+SeRestorePrivilege = *S-1-5-32-544,*S-1-5-32-551
+SeShutdownPrivilege = *S-1-5-32-544,*S-1-5-32-551
+SeTakeOwnershipPrivilege = *S-1-5-32-544
+SeUndockPrivilege = *S-1-5-32-544
+SeManageVolumePrivilege = *S-1-5-32-544
+SeRemoteInteractiveLogonRight = *S-1-5-32-544,*S-1-5-32-555
+SeDenyRemoteInteractiveLogonRight = ansibleadmin
+SeImpersonatePrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-6
+SeCreateGlobalPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-6
+SeIncreaseWorkingSetPrivilege = *S-1-5-32-545
+SeTimeZonePrivilege = *S-1-5-19,*S-1-5-32-544
+SeCreateSymbolicLinkPrivilege = *S-1-5-18,*S-1-5-32-544
+SeDelegateSessionUserImpersonatePrivilege = *S-1-5-32-544
+[Version]
+signature="$CHICAGO$"
+Revision=1
+
+----------User Rights Assignment----------
+
+PrivilegeName                                                      Principal                                     
+-------------                                                      ---------                                     
+Access this computer from the network                              BUILTIN\Administrators                        
+Access this computer from the network                              BUILTIN\Users                                 
+Access this computer from the network                              BUILTIN\Backup Operators                      
+Back up files and directories                                      BUILTIN\Administrators                        
+Back up files and directories                                      BUILTIN\Backup Operators                      
+Back up files and directories                                      NT SERVICE\OracleVssWriterSAG1                
+Back up files and directories                                      NT SERVICE\OracleVssWriterACCESS              
+Back up files and directories                                      NT SERVICE\OracleVssWriterSWP01               
+Bypass traverse checking                                           Everyone                                      
+Bypass traverse checking                                           NT AUTHORITY\LOCAL SERVICE                    
+Bypass traverse checking                                           NT AUTHORITY\NETWORK SERVICE                  
+Bypass traverse checking                                           BUILTIN\Administrators                        
+Bypass traverse checking                                           BUILTIN\Users                                 
+Bypass traverse checking                                           BUILTIN\Backup Operators                      
+Change the system time                                             NT AUTHORITY\LOCAL SERVICE                    
+Change the system time                                             BUILTIN\Administrators                        
+Create a pagefile                                                  BUILTIN\Administrators                        
+Debug programs                                                     BUILTIN\Administrators                        
+Force shutdown from a remote system                                BUILTIN\Administrators                        
+Generate security audits                                           NT AUTHORITY\LOCAL SERVICE                    
+Generate security audits                                           NT AUTHORITY\NETWORK SERVICE                  
+Adjust memory quotas for a process                                 NT AUTHORITY\LOCAL SERVICE                    
+Adjust memory quotas for a process                                 NT AUTHORITY\NETWORK SERVICE                  
+Adjust memory quotas for a process                                 BUILTIN\Administrators                        
+Increase scheduling priority                                       BUILTIN\Administrators                        
+Increase scheduling priority                                       NT SERVICE\OracleServiceSAG1                  
+Increase scheduling priority                                       NT SERVICE\OracleServiceSWP01                 
+Increase scheduling priority                                       NT SERVICE\OracleServiceACCESS                
+Increase scheduling priority                                       Window Manager\Window Manager Group           
+Load and unload device drivers                                     BUILTIN\Administrators                        
+Log on as a batch job                                              BUILTIN\Administrators                        
+Log on as a batch job                                              BUILTIN\Backup Operators                      
+Log on as a batch job                                              BUILTIN\Performance Log Users                 
+Log on as a batch job                                              NT SERVICE\OracleJobSchedulerACCESS           
+Log on as a batch job                                              NT SERVICE\Oracledbhome_swpeTNSListenerswlstnr
+Log on as a batch job                                              NT SERVICE\OracleJobSchedulerSAG1             
+Log on as a batch job                                              NT SERVICE\OracleJobSchedulerSWP01            
+Log on as a service                                                NT AUTHORITY\SYSTEM                           
+Log on as a service                                                swiftadmin                                    
+Log on as a service                                                swiftuser                                     
+Log on as a service                                                NT SERVICE\ALL SERVICES                       
+Log on as a service                                                NT SERVICE\OracleServiceSAG1                  
+Log on as a service                                                NT SERVICE\OracleVssWriterSAG1                
+Log on as a service                                                NT SERVICE\OracleServiceSWP01                 
+Log on as a service                                                NT SERVICE\OracleJobSchedulerACCESS           
+Log on as a service                                                NT SERVICE\OracleVssWriterACCESS              
+Log on as a service                                                NT SERVICE\Oracledbhome_swpeTNSListenerswlstnr
+Log on as a service                                                NT SERVICE\OracleServiceACCESS                
+Log on as a service                                                NT SERVICE\OracleJobSchedulerSAG1             
+Log on as a service                                                NT SERVICE\OracleVssWriterSWP01               
+Log on as a service                                                NT SERVICE\OracleJobSchedulerSWP01            
+Allow log on locally                                               BUILTIN\Administrators                        
+Allow log on locally                                               BUILTIN\Users                                 
+Allow log on locally                                               BUILTIN\Backup Operators                      
+Manage auditing and security log                                   BUILTIN\Administrators                        
+Modify firmware environment values                                 BUILTIN\Administrators                        
+Profile single process                                             BUILTIN\Administrators                        
+Profile system performance                                         BUILTIN\Administrators                        
+Profile system performance                                         NT SERVICE\WdiServiceHost                     
+Replace a process level token                                      NT AUTHORITY\LOCAL SERVICE                    
+Replace a process level token                                      NT AUTHORITY\NETWORK SERVICE                  
+Restore files and directories                                      BUILTIN\Administrators                        
+Restore files and directories                                      BUILTIN\Backup Operators                      
+Shut down the system                                               BUILTIN\Administrators                        
+Shut down the system                                               BUILTIN\Backup Operators                      
+Take ownership of files or other objects                           BUILTIN\Administrators                        
+Remove computer from docking station                               BUILTIN\Administrators                        
+Perform volume maintenance tasks                                   BUILTIN\Administrators                        
+Allow log on through Remote Desktop Services                       BUILTIN\Administrators                        
+Allow log on through Remote Desktop Services                       BUILTIN\Remote Desktop Users                  
+Deny log on through Remote Desktop Services                        ansibleadmin                                  
+Impersonate a client after authentication                          NT AUTHORITY\LOCAL SERVICE                    
+Impersonate a client after authentication                          NT AUTHORITY\NETWORK SERVICE                  
+Impersonate a client after authentication                          BUILTIN\Administrators                        
+Impersonate a client after authentication                          NT AUTHORITY\SERVICE                          
+Create global objects                                              NT AUTHORITY\LOCAL SERVICE                    
+Create global objects                                              NT AUTHORITY\NETWORK SERVICE                  
+Create global objects                                              BUILTIN\Administrators                        
+Create global objects                                              NT AUTHORITY\SERVICE                          
+Increase a process working set                                     BUILTIN\Users                                 
+Change the time zone                                               NT AUTHORITY\LOCAL SERVICE                    
+Change the time zone                                               BUILTIN\Administrators                        
+Create symbolic links                                              NT AUTHORITY\SYSTEM                           
+Create symbolic links                                              BUILTIN\Administrators                        
+Obtain an impersonation token for another user in the same session BUILTIN\Administrators                        
+
+
+
+----------Audit----------
+Security System Extension=Success and Failure
+System Integrity=Success and Failure
+IPsec Driver=Success and Failure
+Other System Events=Success and Failure
+Security State Change=Success and Failure
+Logon=Success and Failure
+Logoff=Success and Failure
+Account Lockout=Success and Failure
+IPsec Main Mode=Success and Failure
+IPsec Quick Mode=Success and Failure
+IPsec Extended Mode=Success and Failure
+Special Logon=Success and Failure
+Other Logon/Logoff Events=Success and Failure
+Network Policy Server=Success and Failure
+User / Device Claims=Success and Failure
+Group Membership=Success and Failure
+File System=Success and Failure
+Registry=Success and Failure
+Kernel Object=Success and Failure
+SAM=Success and Failure
+Certification Services=Success and Failure
+Application Generated=Success and Failure
+Handle Manipulation=Success and Failure
+File Share=Success and Failure
+Filtering Platform Packet Drop=Success and Failure
+Filtering Platform Connection=Success and Failure
+Other Object Access Events=Success and Failure
+Detailed File Share=Success and Failure
+Removable Storage=Success and Failure
+Central Policy Staging=Success and Failure
+Non Sensitive Privilege Use=Success and Failure
+Other Privilege Use Events=Success and Failure
+Sensitive Privilege Use=Success and Failure
+Process Creation=Success and Failure
+Process Termination=Success and Failure
+DPAPI Activity=Success and Failure
+RPC Events=Success and Failure
+Plug and Play Events=Success and Failure
+Token Right Adjusted Events=Success and Failure
+Audit Policy Change=Success and Failure
+Authentication Policy Change=Success and Failure
+Authorization Policy Change=Success and Failure
+MPSSVC Rule-Level Policy Change=Success and Failure
+Filtering Platform Policy Change=Success and Failure
+Other Policy Change Events=Success and Failure
+Computer Account Management=Success and Failure
+Security Group Management=Success and Failure
+Distribution Group Management=Success and Failure
+Application Group Management=Success and Failure
+Other Account Management Events=Success and Failure
+User Account Management=Success and Failure
+Directory Service Access=Success and Failure
+Directory Service Changes=Success and Failure
+Directory Service Replication=Success and Failure
+Detailed Directory Service Replication=Success and Failure
+Kerberos Service Ticket Operations=Success and Failure
+Other Account Logon Events=Success and Failure
+Kerberos Authentication Service=Success and Failure
+Credential Validation=Success and Failure
+
+----------Registry----------
+
+[Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Driver Signing]
+Policy = 0
+
+[Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\currentVersion\winlogon]
+AutoRestartShell = 1
+Background = 0 0 0
+CachedLogonsCount = 10
+DebugServerCommand = no
+DisableBackButton = 1
+EnableSIHostIntegration = 1
+ForceUnlockLogon = 0
+LegalNoticeCaption = 
+LegalNoticeText = 
+PasswordExpiryWarning = 10
+PowerdownAfterShutdown = 0
+PreCreateKnownFolders = {A520A1A4-1780-4FF6-BD18-167343C5AF16}
+ReportBootOk = 1
+Shell = explorer.exe
+ShellAppRuntime = ShellAppRuntime.exe
+ShellCritical = 0
+ShellInfrastructure = sihost.exe
+SiHostCritical = 0
+SiHostReadyTimeOut = 0
+SiHostRestartCountLimit = 0
+SiHostRestartTimeGap = 0
+Userinit = C:\Windows\system32\userinit.exe,
+VMApplet = SystemPropertiesPerformance.exe /pagefile
+WinStationsDisabled = 0
+scremoveoption = 0
+DisableCAD = 1
+LastLogOffEndTimePerfCounter = 97704509276
+ShutdownFlags = 2147483687
+DefaultDomainName = SWIFT-02
+DefaultSID = S-1-5-21-2223777671-3441947113-3617976731-500
+AutoAdminLogon = 0
+
+[Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer]
+ForceActiveDesktopOn = 0
+NoActiveDesktop = 1
+NoActiveDesktopChanges = 1
+ShowSuperHidden = 1
+
+[Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+ConsentPromptBehaviorAdmin = 0
+ConsentPromptBehaviorUser = 3
+DelayedDesktopSwitchTimeout = 0
+DisableAutomaticRestartSignOn = 1
+DSCAutomationHostEnabled = 2
+EnableCursorSuppression = 1
+EnableFullTrustStartupTasks = 2
+EnableInstallerDetection = 1
+EnableLUA = 1
+EnableSecureUIAPaths = 1
+EnableUIADesktopToggle = 0
+EnableUwpStartupTasks = 2
+EnableVirtualization = 1
+PromptOnSecureDesktop = 0
+SupportFullTrustStartupTasks = 1
+SupportUwpStartupTasks = 1
+ValidateAdminCodeSignatures = 0
+disablecad = 0
+dontdisplaylastusername = 0
+legalnoticecaption = CHÍNH SÁCH BẢO MẬT MBV
+legalnoticetext = Yêu cầu người sử dụng MBV tuân thủ các quy định an toàn & bảo mật tài nguyên CNTT trong hệ thống mạng nội bộ 
+scforceoption = 0
+shutdownwithoutlogon = 0
+undockwithoutlogon = 1
+LocalAccountTokenFilterPolicy = 1
+DisablePasswordHint = 1
+
+[Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit]
+ProcessCreationIncludeCmdLine_Enabled = 1
+## Error reading Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters: Cannot find path 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters' because it does not exist.
+## Error reading Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Windows\Sidebar: Cannot find path 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Windows\Sidebar' because it does not exist.
+## Error reading Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Biometrics\FacialFeatures: Cannot find path 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Biometrics\FacialFeatures' because it does not exist.
+## Error reading Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\InputPersonalization: Cannot find path 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\InputPersonalization' because it does not exist.
+## Error reading Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\App and Browser protection: Cannot find path 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\App and Browser protection' because it does not exist.
+## Error reading Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan: Cannot find path 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan' because it does not exist.
+## Error reading Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient: Cannot find path 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' because it does not exist.
+## Error reading Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers: Cannot find path 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers' because it does not exist.
+
+[Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services]
+SecurityLayer = 2
+
+
+	

@@ -1,0 +1,5 @@
+{
+  "normalized_concept": "Account Lockout Policy Lockout Duration",
+  "is_security_relevant": true,
+  "actual_value": "30"
+}
