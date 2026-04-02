@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Netlogon Service Maximum Password Age",
+    "is_security_relevant": true,
+    "actual_value": "4,30"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\MaximumPasswordAge",
+    "value": "4,30",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:40:57.651184"
+}

@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Netlogon Service Require Strong Key",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\RequireStrongKey",
+    "value": "4,1",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:01.708885"
+}

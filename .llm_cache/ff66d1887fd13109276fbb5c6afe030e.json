@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Authentication Cache Size",
+    "is_security_relevant": true,
+    "actual_value": "10"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\CachedLogonsCount",
+    "value": "1,\"10\"",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:03:34.674103"
+}

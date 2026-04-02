@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Security Event Logging - Logon/Logoff Events",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Other Logon/Logoff Events",
+    "value": "Success and Failure",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:42:16.264435"
+}

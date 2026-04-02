@@ -1,0 +1,14 @@
+{
+  "response": "2.3.11.6",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "ForceLogoffWhenHourExpire",
+    "candidates": [
+      "2.3.11.6",
+      "2.3.9.4"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:55.020970"
+}

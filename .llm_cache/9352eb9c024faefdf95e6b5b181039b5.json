@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LDAP\\LDAPClientIntegrity",
+    "candidates": [
+      "2.3.11.8",
+      "2.3.11.9",
+      "2.2.32"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:40:55.907476"
+}

@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\ForceUnlockLogon",
+    "candidates": [
+      "2.3.7.8",
+      "2.3.7.6",
+      "2.3.7.3"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:39:57.867590"
+}

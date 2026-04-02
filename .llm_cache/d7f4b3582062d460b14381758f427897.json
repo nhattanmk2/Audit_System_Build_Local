@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Security Authority (LSA) Privilege: SeRestorePrivilege",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-32-544,*S-1-5-32-551"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeRestorePrivilege",
+    "value": "*S-1-5-32-544,*S-1-5-32-551",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:34.287346"
+}

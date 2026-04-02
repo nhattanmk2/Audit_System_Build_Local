@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Windows System Memory Clearing - Clear Page File at Shutdown",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\ClearPageFileAtShutdown",
+    "value": "4,0",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:40:42.877119"
+}

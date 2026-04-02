@@ -1,0 +1,14 @@
+{
+  "response": "2.2.16",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeCreateGlobalPrivilege",
+    "candidates": [
+      "2.2.16",
+      "17.8.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:46.463554"
+}

@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "LSA FullPrivilegeAuditing Configuration",
+    "is_security_relevant": true,
+    "actual_value": "3,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\FullPrivilegeAuditing",
+    "value": "3,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:22:49.128453"
+}

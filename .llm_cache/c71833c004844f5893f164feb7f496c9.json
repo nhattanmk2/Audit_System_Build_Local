@@ -1,0 +1,15 @@
+{
+  "response": "17.8.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Event Audit",
+    "key": "AuditPrivilegeUse",
+    "candidates": [
+      "17.8.1",
+      "17.6.3",
+      "17.5.2"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:39:48.120489"
+}

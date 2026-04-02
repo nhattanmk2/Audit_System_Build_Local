@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Administrator Account Enabled",
+    "is_security_relevant": true,
+    "actual_value": "1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "EnableAdminAccount",
+    "value": "1",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:39:03.955988"
+}

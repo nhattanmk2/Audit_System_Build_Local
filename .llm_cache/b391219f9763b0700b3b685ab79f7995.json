@@ -1,0 +1,15 @@
+{
+  "response": "1.1.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "PasswordHistorySize",
+    "candidates": [
+      "18.9.25.5",
+      "18.9.25.4",
+      "1.1.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:46.964183"
+}

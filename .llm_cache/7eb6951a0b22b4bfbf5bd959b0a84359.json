@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Security Authority (LSA) SeAssignPrimaryTokenPrivilege Assignment",
+    "is_security_relevant": true,
+    "actual_value": "*S-1-5-19,*S-1-5-20"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Privilege Rights",
+    "key": "SeAssignPrimaryTokenPrivilege",
+    "value": "*S-1-5-19,*S-1-5-20",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:30.178851"
+}

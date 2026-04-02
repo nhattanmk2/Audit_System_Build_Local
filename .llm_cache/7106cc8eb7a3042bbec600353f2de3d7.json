@@ -1,0 +1,15 @@
+{
+  "response": "17.6.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Detailed File Share",
+    "candidates": [
+      "17.6.1",
+      "17.6.2",
+      "18.10.26.4.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:42:57.220865"
+}

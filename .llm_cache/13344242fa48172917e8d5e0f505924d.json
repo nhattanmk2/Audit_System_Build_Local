@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "IPsec Security Association (SA) Negotiation Outcome Logging",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "IPsec Quick Mode",
+    "value": "Success and Failure",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:42:09.347258"
+}

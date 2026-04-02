@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Password Policy Expiration",
+    "is_security_relevant": true,
+    "actual_value": "0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "ForceLogoffWhenHourExpire",
+    "value": "0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:02:20.438331"
+}

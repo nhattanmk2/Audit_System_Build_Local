@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Security SubSystems Configuration",
+    "is_security_relevant": true,
+    "actual_value": "7"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Session Manager\\SubSystems\\optional",
+    "value": "7,",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:23:52.862061"
+}

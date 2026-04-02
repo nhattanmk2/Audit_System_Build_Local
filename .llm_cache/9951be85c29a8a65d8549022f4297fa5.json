@@ -1,0 +1,15 @@
+{
+  "response": "17.5.5",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Other Privilege Use Events",
+    "candidates": [
+      "17.6.3",
+      "17.2.4",
+      "17.5.5"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:43:00.367258"
+}

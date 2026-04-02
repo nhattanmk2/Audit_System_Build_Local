@@ -1,0 +1,15 @@
+{
+  "response": "2.3.10.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "LSAAnonymousNameLookup",
+    "candidates": [
+      "2.3.10.1",
+      "2.3.10.3",
+      "2.3.10.2"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:39:02.247550"
+}

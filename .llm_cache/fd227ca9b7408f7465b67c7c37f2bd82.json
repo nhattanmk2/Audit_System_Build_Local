@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "LDAP Client Integrity Check",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LDAP\\LDAPClientIntegrity",
+    "value": "4,1",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:40:54.945215"
+}

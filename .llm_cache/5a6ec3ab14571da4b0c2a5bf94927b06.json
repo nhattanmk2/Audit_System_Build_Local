@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Version Information",
+    "is_security_relevant": false,
+    "actual_value": "1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Revision",
+    "value": "1",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:54.617401"
+}

@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Password Complexity Policy",
+    "is_security_relevant": true,
+    "actual_value": "1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "PasswordComplexity",
+    "value": "1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:02:18.298195"
+}

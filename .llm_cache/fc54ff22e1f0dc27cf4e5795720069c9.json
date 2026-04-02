@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Print Spooler Automatic Drivers Update Configuration",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Print\\Providers\\LanMan Print Services\\Servers\\AddPrinterDrivers",
+    "value": "4,1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:23:30.605062"
+}

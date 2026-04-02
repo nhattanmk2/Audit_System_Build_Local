@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "User Account Control: Behavior of the elevation prompt for regular users",
+    "is_security_relevant": true,
+    "actual_value": "4,3"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\ConsentPromptBehaviorUser",
+    "value": "4,3",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:03:53.437123"
+}

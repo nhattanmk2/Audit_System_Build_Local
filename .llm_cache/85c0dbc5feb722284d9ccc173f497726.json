@@ -1,0 +1,15 @@
+{
+  "response": "1.1.4",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "MinimumPasswordLength",
+    "candidates": [
+      "1.1.4",
+      "18.9.25.5",
+      "18.9.25.4"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:43.846023"
+}

@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeDelegateSessionUserImpersonatePrivilege",
+    "candidates": [
+      "2.3.10.13",
+      "2.2.28",
+      "2.3.17.5"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:50.896937"
+}

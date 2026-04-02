@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Windows Logon Interactive Log On Restrictions",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\ForceUnlockLogon",
+    "value": "4,0",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:39:56.916602"
+}

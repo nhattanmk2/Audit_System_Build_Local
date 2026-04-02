@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Password Policy: Enforce Logon Requirement for Password Changes",
+    "is_security_relevant": true,
+    "actual_value": "0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "RequireLogonToChangePassword",
+    "value": "0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:02:19.984115"
+}

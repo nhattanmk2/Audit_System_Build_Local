@@ -27,6 +27,9 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from datetime import datetime
 from dotenv import load_dotenv
 from cmc_report_gen import generate_cmc_report
+from docx_utils import fill_audit_results
+from docx2pdf import convert
+import pythoncom
 
 load_dotenv()  # ⬅️ BẮT BUỘC
 
@@ -60,6 +63,12 @@ if "word_buffer" not in st.session_state:
     st.session_state.word_buffer = None
 if "last_file_name" not in st.session_state:
     st.session_state.last_file_name = ""
+if "template_word_buffer" not in st.session_state:
+    st.session_state.template_word_buffer = None
+if "template_pdf_buffer" not in st.session_state:
+    st.session_state.template_pdf_buffer = None
+if "matched_template_name" not in st.session_state:
+    st.session_state.matched_template_name = ""
 
 st.markdown("""
 Hệ thống tự động so sánh file cấu hình (SecEdit, Registry dump...) với CIS Benchmark.
@@ -788,7 +797,31 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
         st.session_state.metrics = {"PASS": 0, "FAIL": 0, "SKIP": 0}
         st.session_state.pdf_buffer = None
         st.session_state.word_buffer = None
-        st.session_state.last_file_name = uploaded_config.name
+        # 1. Extract System ID from FIRST LINE of content
+        first_line = ""
+        for line in content.splitlines():
+            if line.strip():
+                first_line = line.strip()
+                break
+        
+        st.session_state.last_file_name = first_line if first_line else uploaded_config.name
+        system_id_to_match = first_line.lower()
+        st.session_state.matched_template_name = ""
+        
+        # 2. Look for matching template in CIS_Data/Reports_Template
+        template_dir = Path("CIS_Data/Reports_Template")
+        if template_dir.exists():
+            for t_file in template_dir.glob("*.docx"):
+                # Matching: if either the ID is in filename or filename is in ID
+                t_name_lower = t_file.stem.lower()
+                if t_name_lower in system_id_to_match or system_id_to_match in t_name_lower:
+                    st.session_state.matched_template_name = str(t_file)
+                    break
+        
+        if not st.session_state.matched_template_name:
+            st.error(f"❌ KHÔNG TÌM THẤY mẫu báo cáo cho hệ thống: '{first_line}' trong thư mục `CIS_Data/Reports_Template/`.")
+            st.info("Vui lòng kiểm tra lại dòng đầu tiên của file config hoặc sử dụng công cụ Tách Báo Cáo.")
+            st.stop() # Stop execution if no template found
 
         cis_db = Chroma(
             persist_directory=CIS_DB_PATH,
@@ -834,22 +867,27 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
 
             st.session_state.audit_done = True
             
-            # Generate PDF buffer once
-            if pdf_rows:
-                st.session_state.pdf_buffer = generate_audit_pdf(pdf_rows).getvalue()
-                
-                # Generate CMC Data
-                cmc_data = []
-                for res_item in st.session_state.audit_results:
-                    # We can use the results already computed
-                    res = res_item["result"]
-                    cmc_data.append({
-                        "param_name": res_item["key"],
-                        "actual_value": res.get("actual", ""),
-                        "result": res.get("compliance_status", "SKIP"),
-                        "remediation": res.get("remediation", "")
-                    })
-                st.session_state.word_buffer = generate_cmc_report(cmc_data, target_server=uploaded_config.name).getvalue()
+            # 3. Generate CMC Word using Template immediately after audit
+            if pdf_rows and st.session_state.matched_template_name:
+                with st.spinner("🧠 Đang sử dụng AI để so khớp tiêu chí và điền kết quả vào file mẫu..."):
+                    output_docx = f"exports/Report_{Path(st.session_state.matched_template_name).name}"
+                    os.makedirs("exports", exist_ok=True)
+                    
+                    # Use LLM-powered fill_audit_results to populate the template
+                    fill_audit_results(st.session_state.matched_template_name, pdf_rows, output_docx, llm=llm)
+                    
+                    with open(output_docx, "rb") as f:
+                        st.session_state.template_word_buffer = f.read()
+                    
+                    # Prepare PDF buffer via docx2pdf
+                    try:
+                        pythoncom.CoInitialize()
+                        output_pdf = output_docx.replace(".docx", ".pdf")
+                        convert(output_docx, output_pdf)
+                        with open(output_pdf, "rb") as f:
+                            st.session_state.template_pdf_buffer = f.read()
+                    except Exception as pdf_err:
+                        print(f"PDF creation failed during audit finish: {pdf_err}")
 
             st.rerun()
 
@@ -869,20 +907,26 @@ if uploaded_config and os.path.exists(CIS_DB_PATH):
         m_col2.metric("FAIL", st.session_state.metrics["FAIL"])
         m_col3.metric("SKIP", st.session_state.metrics["SKIP"])
 
-        # Action Buttons
+        # Action Buttons (Repurposed for CMC Templates)
         dl_col1, dl_col2 = st.columns(2)
-        if st.session_state.pdf_buffer:
+        
+        # PDF Button
+        if st.session_state.template_pdf_buffer:
             dl_col1.download_button(
                 label="📥 Download Audit Result (PDF)",
-                data=st.session_state.pdf_buffer,
-                file_name=f"audit_result_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+                data=st.session_state.template_pdf_buffer,
+                file_name=f"Audit_Report_{st.session_state.last_file_name}.pdf",
                 mime="application/pdf"
             )
-        if st.session_state.word_buffer:
+        else:
+            dl_col1.info("🛠️ Đang chuẩn bị PDF (Yêu cầu MS Word)...")
+
+        # Word Button
+        if st.session_state.template_word_buffer:
             dl_col2.download_button(
                 label="📘 Download CMC Report (Word)",
-                data=st.session_state.word_buffer,
-                file_name=f"CMC_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx",
+                data=st.session_state.template_word_buffer,
+                file_name=f"Report_{st.session_state.last_file_name}.docx",
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
 

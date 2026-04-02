@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "LSA Audit Base Objects Configuration",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\AuditBaseObjects",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:22:06.460997"
+}

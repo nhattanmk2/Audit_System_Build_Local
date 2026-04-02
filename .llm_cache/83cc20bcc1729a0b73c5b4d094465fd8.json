@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Security Authority Password Policy Password History Count",
+    "is_security_relevant": true,
+    "actual_value": "4"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "PasswordHistorySize",
+    "value": "4",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:45.832778"
+}

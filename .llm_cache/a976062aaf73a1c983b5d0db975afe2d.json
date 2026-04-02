@@ -1,0 +1,14 @@
+{
+  "response": "17.9.4",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Security System Extension",
+    "candidates": [
+      "17.9.4",
+      "18.10.26.2.1"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:57.991844"
+}

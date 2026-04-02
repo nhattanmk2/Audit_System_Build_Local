@@ -1,0 +1,15 @@
+{
+  "response": "17.5.2",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Group Membership",
+    "candidates": [
+      "17.5.2",
+      "17.2.3",
+      "17.2.5"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:42:35.912119"
+}

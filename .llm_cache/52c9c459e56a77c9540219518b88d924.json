@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Character Encoding Configuration",
+    "is_security_relevant": true,
+    "actual_value": "yes"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Unicode",
+    "key": "Unicode",
+    "value": "yes",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:02:17.818320"
+}

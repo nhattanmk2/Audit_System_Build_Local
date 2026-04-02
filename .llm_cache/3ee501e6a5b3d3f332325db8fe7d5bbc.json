@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Audit Logon Events",
+    "is_security_relevant": true,
+    "actual_value": "3"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Event Audit",
+    "key": "AuditAccountLogon",
+    "value": "3",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:03:22.507321"
+}

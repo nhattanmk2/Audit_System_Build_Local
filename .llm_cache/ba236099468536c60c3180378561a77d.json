@@ -1,0 +1,15 @@
+{
+  "response": "2.3.13.1",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\ShutdownWithoutLogon",
+    "candidates": [
+      "2.3.13.1",
+      "2.3.9.4",
+      "2.2.30"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:40:08.963419"
+}

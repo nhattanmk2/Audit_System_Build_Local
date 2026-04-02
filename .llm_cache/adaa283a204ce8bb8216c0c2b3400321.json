@@ -1,0 +1,15 @@
+{
+  "response": "1.2.3",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "System Access",
+    "key": "AllowAdministratorLockout",
+    "candidates": [
+      "1.2.3",
+      "2.3.17.1",
+      "2.2.30"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:53.849843"
+}

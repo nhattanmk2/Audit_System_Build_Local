@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Code Signing Policy for System Registry",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\ValidateAdminCodeSignatures",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:21:53.277215"
+}

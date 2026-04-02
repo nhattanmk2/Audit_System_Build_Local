@@ -1,0 +1,14 @@
+{
+  "response": "2.2.14",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeCreatePagefilePrivilege",
+    "candidates": [
+      "2.2.14",
+      "2.2.16"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:22.318289"
+}

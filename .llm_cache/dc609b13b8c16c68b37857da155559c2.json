@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Security Authority Password Policy Minimum Password Age",
+    "is_security_relevant": true,
+    "actual_value": "0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "MinimumPasswordAge",
+    "value": "0",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:36.098311"
+}

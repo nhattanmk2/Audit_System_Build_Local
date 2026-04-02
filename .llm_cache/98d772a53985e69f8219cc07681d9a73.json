@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Account Lockout Policy - Audit Both Success and Failure",
+    "is_security_relevant": true,
+    "actual_value": "Success and Failure"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Version",
+    "key": "Account Lockout",
+    "value": "Success and Failure",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:42:05.659139"
+}

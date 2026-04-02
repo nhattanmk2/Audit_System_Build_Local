@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Installer Detection Policy",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\EnableInstallerDetection",
+    "value": "4,1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:04:15.426320"
+}

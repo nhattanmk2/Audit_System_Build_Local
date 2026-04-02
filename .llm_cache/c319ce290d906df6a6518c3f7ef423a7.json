@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "User Account Control: Allow Logoff and Shutdown without signing out users",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\ShutdownWithoutLogon",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:05:07.332321"
+}

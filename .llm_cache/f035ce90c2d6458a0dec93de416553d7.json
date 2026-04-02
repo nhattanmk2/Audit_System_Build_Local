@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Privilege Rights",
+    "key": "SeNetworkLogonRight",
+    "candidates": [
+      "2.3.10.3",
+      "18.4.1",
+      "2.3.10.2"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:10.407249"
+}

@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Anonymous Name Lookup in Local Security Authority (LSAAnonymousNameLookup)",
+    "is_security_relevant": true,
+    "actual_value": "0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "LSAAnonymousNameLookup",
+    "value": "0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:02:22.464914"
+}

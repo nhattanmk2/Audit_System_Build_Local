@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Netlogon Service Secure Channel Signing",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters\\SignSecureChannel",
+    "value": "4,1",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:41:06.379723"
+}

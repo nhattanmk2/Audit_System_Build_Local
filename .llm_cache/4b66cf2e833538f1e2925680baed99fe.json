@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Account Lockout Duration",
+    "is_security_relevant": true,
+    "actual_value": "30"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "LockoutDuration",
+    "value": "30",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:02:19.032415"
+}

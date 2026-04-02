@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Server Message Block (SMB) Service - Require Security Signature",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\RequireSecuritySignature",
+    "value": "4,0",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:40:51.769165"
+}

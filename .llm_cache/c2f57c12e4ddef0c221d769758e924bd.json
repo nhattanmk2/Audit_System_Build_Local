@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Account Password Complexity - Minimum Length",
+    "is_security_relevant": true,
+    "actual_value": "8"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "MinimumPasswordLength",
+    "value": "8",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:42.718759"
+}

@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Account Management - Default Guest Account Name",
+    "is_security_relevant": true,
+    "actual_value": "Guest"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "NewGuestName",
+    "value": "\"Guest\"",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:59.891877"
+}

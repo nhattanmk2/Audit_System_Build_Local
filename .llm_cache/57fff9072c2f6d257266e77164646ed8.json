@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Administrator Account Name",
+    "is_security_relevant": true,
+    "actual_value": "Administrator"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "NewAdministratorName",
+    "value": "\"Administrator\"",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:56.760942"
+}

@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Windows Logon Password Expiration Warning Period",
+    "is_security_relevant": true,
+    "actual_value": "4,10"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\PasswordExpiryWarning",
+    "value": "4,10",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:40:00.057464"
+}

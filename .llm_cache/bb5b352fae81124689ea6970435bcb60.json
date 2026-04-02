@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Password Complexity Configuration",
+    "is_security_relevant": true,
+    "actual_value": "4,1"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Control\\Lsa\\LimitBlankPasswordUse",
+    "value": "4,1",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:22:52.495453"
+}

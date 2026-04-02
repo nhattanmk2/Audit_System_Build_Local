@@ -1,0 +1,15 @@
+{
+  "response": "NONE",
+  "metadata": {
+    "type": "rule_selection",
+    "section": "Version",
+    "key": "Plug and Play Events",
+    "candidates": [
+      "17.6.3",
+      "17.9.2",
+      "17.2.4"
+    ],
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:43:09.191391"
+}

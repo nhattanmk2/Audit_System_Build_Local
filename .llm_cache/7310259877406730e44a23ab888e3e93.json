@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "LAN Manager Authentication Level",
+    "is_security_relevant": true,
+    "actual_value": "4,0"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "Registry Values",
+    "key": "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\EnableSecuritySignature",
+    "value": "4,0",
+    "model": "default"
+  },
+  "timestamp": "2026-04-02T17:24:05.244901"
+}

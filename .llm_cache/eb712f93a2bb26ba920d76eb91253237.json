@@ -1,0 +1,15 @@
+{
+  "response": {
+    "normalized_concept": "Local Account Lockout Threshold",
+    "is_security_relevant": true,
+    "actual_value": "30"
+  },
+  "metadata": {
+    "type": "normalization",
+    "section": "System Access",
+    "key": "ResetLockoutCount",
+    "value": "30",
+    "model": "gemma-3-27b-it"
+  },
+  "timestamp": "2026-04-02T16:38:52.540957"
+}
